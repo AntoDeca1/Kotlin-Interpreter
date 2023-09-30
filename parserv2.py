@@ -35,7 +35,8 @@ def p_statement_list(p):
 
 
 def p_statement(p):
-    '''statement : variable_declaration'''
+    '''statement : variable_declaration
+                 | function_declaration'''
     p[0] = p[1]
 
 
@@ -143,6 +144,27 @@ def p_boolean(p):
 def p_sync(p):
     '''sync : NEWLINE'''
     pass
+
+
+# NEW(Starting to introduce the function definition)
+# TODO: function_declaration to be checked
+def p_function_declaration(p):
+    '''function_declaration : FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE'''
+    p[0] = ('fun', p[4])
+
+
+def p_parameter_list(p):
+    '''parameter_list : parameter
+                     | parameter_list COMMA parameter '''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
+
+
+def p_parameter(p):
+    '''parameter : ID COLONS type'''
+    p[0] = p[1]
 
 
 # PANIC MODE

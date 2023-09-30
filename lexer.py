@@ -9,6 +9,7 @@ non_reserved = [
     'WHITE',
     'TIMES',
     'DIVIDE',
+    'COMMA',
     'EQUAL',
     'NOT_EQUAL',
     'NEWLINE',
@@ -22,8 +23,8 @@ non_reserved = [
     'LOGICAL_NOT',
     'RPAREN',
     'LPAREN',
-    'L_BRACE',
-    'R_BRACE',
+    'LBRACE',
+    'RBRACE',
     'COLONS',  #:
     'STRING_LITERAL',
     'INTEGER_LITERAL',
@@ -33,7 +34,7 @@ non_reserved = [
 reserved = {
     'if': 'IF',
     'else': 'ELSE',
-    'fun': 'FUNCTION',
+    'fun': 'FUN',
     'while': 'WHILE',
     'Int': 'INT',
     'Boolean': 'BOOLEAN',
@@ -58,9 +59,10 @@ t_TIMES = r'\*'
 t_DIVIDE = r'\/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_L_BRACE = r'\{'
-t_R_BRACE = r'\}'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
 t_COLONS = r'\:'
+t_COMMA = r'\,'
 t_GREATER_THAN_EQUAL = r'\>='
 t_LESS_THAN_EQUAL = r'\<='
 t_NOT_EQUAL = r'\!='
@@ -109,13 +111,13 @@ def t_ID(t):
 
 
 lexer = lex.lex()
-# input_sentence = '''var x =  "Kevin" + "Rodolfo" '''
-#
-# lexer.input(input_sentence)
-#
-# # Step 3: Iterate over the tokens
-# while True:
-#     token = lexer.token()
-#     if not token:
-#         break  # No more tokens
-#     print(token)
+input_sentence = '''fun prova(x:String,y:String){val x=5} '''
+
+lexer.input(input_sentence)
+
+# Step 3: Iterate over the tokens
+while True:
+    token = lexer.token()
+    if not token:
+        break  # No more tokens
+    print(token)
