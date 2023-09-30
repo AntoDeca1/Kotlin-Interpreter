@@ -70,12 +70,6 @@ def p_aritmetic_expression(p):
                             | aritmetic_expression MINUS aritmetic_expression
                             | aritmetic_expression TIMES aritmetic_expression
                             | aritmetic_expression DIVIDE aritmetic_expression
-                            | aritmetic_expression GREATER_THAN aritmetic_expression
-                            | aritmetic_expression LESS_THAN aritmetic_expression
-                            | aritmetic_expression LOGICAL_EQUAL aritmetic_expression
-                            | aritmetic_expression NOT_EQUAL aritmetic_expression
-                            | aritmetic_expression GREATER_THAN_EQUAL aritmetic_expression
-                            | aritmetic_expression LESS_THAN_EQUAL aritmetic_expression
                             | LPAREN aritmetic_expression RPAREN'''
     if len(p) == 2:
         p[0] = p[1]
@@ -85,18 +79,6 @@ def p_aritmetic_expression(p):
         p[0] = p[1] - p[3]
     elif p[2] == "*":
         p[0] = p[1] * p[3]
-    elif p[2] == ">":
-        p[0] = p[1] > p[3]
-    elif p[2] == "<":
-        p[0] = p[1] < p[3]
-    elif p[2] == "==":
-        p[0] = p[1] == p[3]
-    elif p[2] == "!=":
-        p[0] = p[1] != p[3]
-    elif p[2] == ">=":
-        p[0] = p[1] >= p[3]
-    elif p[2] == "<=":
-        p[0] = p[1] <= p[3]
     else:
         p[0] = p[2]
 
@@ -118,6 +100,12 @@ def p_boolean_expression(p):
                          | boolean_expression LOGICAL_AND boolean_expression
                          | boolean_expression LOGICAL_OR boolean_expression
                          | LOGICAL_NOT boolean_expression
+                         | aritmetic_expression GREATER_THAN aritmetic_expression
+                         | aritmetic_expression LESS_THAN aritmetic_expression
+                         | aritmetic_expression LOGICAL_EQUAL aritmetic_expression
+                         | aritmetic_expression NOT_EQUAL aritmetic_expression
+                         | aritmetic_expression GREATER_THAN_EQUAL aritmetic_expression
+                         | aritmetic_expression LESS_THAN_EQUAL aritmetic_expression
                          | LPAREN boolean_expression RPAREN '''
     if len(p) == 2:
         p[0] = p[1]
@@ -127,6 +115,18 @@ def p_boolean_expression(p):
         p[0] = p[1] or p[3]
     elif p[1] == "!":
         p[0] = not (p[2])
+    elif p[2] == ">":
+        p[0] = p[1] > p[3]
+    elif p[2] == "<":
+        p[0] = p[1] < p[3]
+    elif p[2] == "==":
+        p[0] = p[1] == p[3]
+    elif p[2] == "!=":
+        p[0] = p[1] != p[3]
+    elif p[2] == ">=":
+        p[0] = p[1] >= p[3]
+    elif p[2] == "<=":
+        p[0] = p[1] <= p[3]
     else:
         p[0] = p[2]
 
@@ -134,6 +134,10 @@ def p_boolean_expression(p):
 def p_boolean(p):
     '''boolean : TRUE
                | FALSE'''
+    if p[1] == 'true':
+        p[0] = True
+    else:
+        p[0] = False
 
 
 def p_sync(p):
