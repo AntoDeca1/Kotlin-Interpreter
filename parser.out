@@ -1,0 +1,3038 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    EMPTY
+    READLINE
+    WHITE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statement_list
+Rule 2     expression -> MINUS expression
+Rule 3     statement_list -> statement
+Rule 4     statement_list -> statement_list statement
+Rule 5     statement -> variable_declaration
+Rule 6     statement -> function_declaration
+Rule 7     statement -> if_statement
+Rule 8     statement -> while_statement
+Rule 9     statement -> output_statement
+Rule 10    variable_declaration -> VAL ID COLONS type EQUAL expression
+Rule 11    variable_declaration -> VAR ID COLONS type EQUAL expression
+Rule 12    variable_declaration -> VAL ID EQUAL expression
+Rule 13    variable_declaration -> VAR ID EQUAL expression
+Rule 14    type -> INT
+Rule 15    type -> STRING
+Rule 16    type -> BOOLEAN
+Rule 17    expression -> term
+Rule 18    expression -> expression PLUS expression
+Rule 19    expression -> expression MINUS expression
+Rule 20    expression -> expression TIMES expression
+Rule 21    expression -> expression DIVIDE expression
+Rule 22    expression -> expression LOGICAL_AND expression
+Rule 23    expression -> expression LOGICAL_OR expression
+Rule 24    expression -> expression LOGICAL_EQUAL expression
+Rule 25    expression -> LOGICAL_NOT expression
+Rule 26    expression -> expression GREATER_THAN expression
+Rule 27    expression -> expression LESS_THAN expression
+Rule 28    expression -> expression NOT_EQUAL expression
+Rule 29    expression -> expression GREATER_THAN_EQUAL expression
+Rule 30    expression -> expression LESS_THAN_EQUAL expression
+Rule 31    expression -> LPAREN expression RPAREN
+Rule 32    term -> Literal
+Rule 33    term -> ID
+Rule 34    Literal -> INTEGER_LITERAL
+Rule 35    Literal -> boolean
+Rule 36    Literal -> STRING_LITERAL
+Rule 37    boolean -> TRUE
+Rule 38    boolean -> FALSE
+Rule 39    sync -> NEWLINE
+Rule 40    function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+Rule 41    parameter_list -> parameter
+Rule 42    parameter_list -> parameter_list COMMA parameter
+Rule 43    parameter -> ID COLONS type
+Rule 44    if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+Rule 45    if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+Rule 46    while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+Rule 47    output_statement -> PRINT LPAREN expression RPAREN
+
+Terminals, with rules where they appear
+
+BOOLEAN              : 16
+COLONS               : 10 11 43
+COMMA                : 42
+DIVIDE               : 21
+ELSE                 : 45
+EMPTY                : 
+EQUAL                : 10 11 12 13
+FALSE                : 38
+FUN                  : 40
+GREATER_THAN         : 26
+GREATER_THAN_EQUAL   : 29
+ID                   : 10 11 12 13 33 40 43
+IF                   : 44 45
+INT                  : 14
+INTEGER_LITERAL      : 34
+LBRACE               : 40 44 45 45 46
+LESS_THAN            : 27
+LESS_THAN_EQUAL      : 30
+LOGICAL_AND          : 22
+LOGICAL_EQUAL        : 24
+LOGICAL_NOT          : 25
+LOGICAL_OR           : 23
+LPAREN               : 31 40 44 45 46 47
+MINUS                : 2 19
+NEWLINE              : 39
+NOT_EQUAL            : 28
+PLUS                 : 18
+PRINT                : 47
+RBRACE               : 40 44 45 45 46
+READLINE             : 
+RPAREN               : 31 40 44 45 46 47
+STRING               : 15
+STRING_LITERAL       : 36
+TIMES                : 20
+TRUE                 : 37
+VAL                  : 10 12
+VAR                  : 11 13
+WHILE                : 46
+WHITE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+Literal              : 32
+boolean              : 35
+expression           : 2 10 11 12 13 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 26 26 27 27 28 28 29 29 30 30 31 44 45 46 47
+function_declaration : 6
+if_statement         : 7
+output_statement     : 9
+parameter            : 41 42
+parameter_list       : 40 42
+program              : 0
+statement            : 3 4
+statement_list       : 1 4 40 44 45 45 46
+sync                 : 
+term                 : 17
+type                 : 10 11 43
+variable_declaration : 5
+while_statement      : 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . statement_list
+    (3) statement_list -> . statement
+    (4) statement_list -> . statement_list statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    program                        shift and go to state 1
+    statement_list                 shift and go to state 2
+    statement                      shift and go to state 3
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> statement_list .
+    (4) statement_list -> statement_list . statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    $end            reduce using rule 1 (program -> statement_list .)
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement                      shift and go to state 15
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 3
+
+    (3) statement_list -> statement .
+
+    VAL             reduce using rule 3 (statement_list -> statement .)
+    VAR             reduce using rule 3 (statement_list -> statement .)
+    FUN             reduce using rule 3 (statement_list -> statement .)
+    IF              reduce using rule 3 (statement_list -> statement .)
+    WHILE           reduce using rule 3 (statement_list -> statement .)
+    PRINT           reduce using rule 3 (statement_list -> statement .)
+    $end            reduce using rule 3 (statement_list -> statement .)
+    RBRACE          reduce using rule 3 (statement_list -> statement .)
+
+
+state 4
+
+    (5) statement -> variable_declaration .
+
+    VAL             reduce using rule 5 (statement -> variable_declaration .)
+    VAR             reduce using rule 5 (statement -> variable_declaration .)
+    FUN             reduce using rule 5 (statement -> variable_declaration .)
+    IF              reduce using rule 5 (statement -> variable_declaration .)
+    WHILE           reduce using rule 5 (statement -> variable_declaration .)
+    PRINT           reduce using rule 5 (statement -> variable_declaration .)
+    $end            reduce using rule 5 (statement -> variable_declaration .)
+    RBRACE          reduce using rule 5 (statement -> variable_declaration .)
+
+
+state 5
+
+    (6) statement -> function_declaration .
+
+    VAL             reduce using rule 6 (statement -> function_declaration .)
+    VAR             reduce using rule 6 (statement -> function_declaration .)
+    FUN             reduce using rule 6 (statement -> function_declaration .)
+    IF              reduce using rule 6 (statement -> function_declaration .)
+    WHILE           reduce using rule 6 (statement -> function_declaration .)
+    PRINT           reduce using rule 6 (statement -> function_declaration .)
+    $end            reduce using rule 6 (statement -> function_declaration .)
+    RBRACE          reduce using rule 6 (statement -> function_declaration .)
+
+
+state 6
+
+    (7) statement -> if_statement .
+
+    VAL             reduce using rule 7 (statement -> if_statement .)
+    VAR             reduce using rule 7 (statement -> if_statement .)
+    FUN             reduce using rule 7 (statement -> if_statement .)
+    IF              reduce using rule 7 (statement -> if_statement .)
+    WHILE           reduce using rule 7 (statement -> if_statement .)
+    PRINT           reduce using rule 7 (statement -> if_statement .)
+    $end            reduce using rule 7 (statement -> if_statement .)
+    RBRACE          reduce using rule 7 (statement -> if_statement .)
+
+
+state 7
+
+    (8) statement -> while_statement .
+
+    VAL             reduce using rule 8 (statement -> while_statement .)
+    VAR             reduce using rule 8 (statement -> while_statement .)
+    FUN             reduce using rule 8 (statement -> while_statement .)
+    IF              reduce using rule 8 (statement -> while_statement .)
+    WHILE           reduce using rule 8 (statement -> while_statement .)
+    PRINT           reduce using rule 8 (statement -> while_statement .)
+    $end            reduce using rule 8 (statement -> while_statement .)
+    RBRACE          reduce using rule 8 (statement -> while_statement .)
+
+
+state 8
+
+    (9) statement -> output_statement .
+
+    VAL             reduce using rule 9 (statement -> output_statement .)
+    VAR             reduce using rule 9 (statement -> output_statement .)
+    FUN             reduce using rule 9 (statement -> output_statement .)
+    IF              reduce using rule 9 (statement -> output_statement .)
+    WHILE           reduce using rule 9 (statement -> output_statement .)
+    PRINT           reduce using rule 9 (statement -> output_statement .)
+    $end            reduce using rule 9 (statement -> output_statement .)
+    RBRACE          reduce using rule 9 (statement -> output_statement .)
+
+
+state 9
+
+    (10) variable_declaration -> VAL . ID COLONS type EQUAL expression
+    (12) variable_declaration -> VAL . ID EQUAL expression
+
+    ID              shift and go to state 16
+
+
+state 10
+
+    (11) variable_declaration -> VAR . ID COLONS type EQUAL expression
+    (13) variable_declaration -> VAR . ID EQUAL expression
+
+    ID              shift and go to state 17
+
+
+state 11
+
+    (40) function_declaration -> FUN . ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+
+    ID              shift and go to state 18
+
+
+state 12
+
+    (44) if_statement -> IF . LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> IF . LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+
+    LPAREN          shift and go to state 19
+
+
+state 13
+
+    (46) while_statement -> WHILE . LPAREN expression RPAREN LBRACE statement_list RBRACE
+
+    LPAREN          shift and go to state 20
+
+
+state 14
+
+    (47) output_statement -> PRINT . LPAREN expression RPAREN
+
+    LPAREN          shift and go to state 21
+
+
+state 15
+
+    (4) statement_list -> statement_list statement .
+
+    VAL             reduce using rule 4 (statement_list -> statement_list statement .)
+    VAR             reduce using rule 4 (statement_list -> statement_list statement .)
+    FUN             reduce using rule 4 (statement_list -> statement_list statement .)
+    IF              reduce using rule 4 (statement_list -> statement_list statement .)
+    WHILE           reduce using rule 4 (statement_list -> statement_list statement .)
+    PRINT           reduce using rule 4 (statement_list -> statement_list statement .)
+    $end            reduce using rule 4 (statement_list -> statement_list statement .)
+    RBRACE          reduce using rule 4 (statement_list -> statement_list statement .)
+
+
+state 16
+
+    (10) variable_declaration -> VAL ID . COLONS type EQUAL expression
+    (12) variable_declaration -> VAL ID . EQUAL expression
+
+    COLONS          shift and go to state 22
+    EQUAL           shift and go to state 23
+
+
+state 17
+
+    (11) variable_declaration -> VAR ID . COLONS type EQUAL expression
+    (13) variable_declaration -> VAR ID . EQUAL expression
+
+    COLONS          shift and go to state 24
+    EQUAL           shift and go to state 25
+
+
+state 18
+
+    (40) function_declaration -> FUN ID . LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+
+    LPAREN          shift and go to state 26
+
+
+state 19
+
+    (44) if_statement -> IF LPAREN . expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> IF LPAREN . expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 28
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 20
+
+    (46) while_statement -> WHILE LPAREN . expression RPAREN LBRACE statement_list RBRACE
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 39
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 21
+
+    (47) output_statement -> PRINT LPAREN . expression RPAREN
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 40
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 22
+
+    (10) variable_declaration -> VAL ID COLONS . type EQUAL expression
+    (14) type -> . INT
+    (15) type -> . STRING
+    (16) type -> . BOOLEAN
+
+    INT             shift and go to state 42
+    STRING          shift and go to state 43
+    BOOLEAN         shift and go to state 44
+
+    type                           shift and go to state 41
+
+state 23
+
+    (12) variable_declaration -> VAL ID EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 45
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 24
+
+    (11) variable_declaration -> VAR ID COLONS . type EQUAL expression
+    (14) type -> . INT
+    (15) type -> . STRING
+    (16) type -> . BOOLEAN
+
+    INT             shift and go to state 42
+    STRING          shift and go to state 43
+    BOOLEAN         shift and go to state 44
+
+    type                           shift and go to state 46
+
+state 25
+
+    (13) variable_declaration -> VAR ID EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 47
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 26
+
+    (40) function_declaration -> FUN ID LPAREN . parameter_list RPAREN LBRACE statement_list RBRACE
+    (41) parameter_list -> . parameter
+    (42) parameter_list -> . parameter_list COMMA parameter
+    (43) parameter -> . ID COLONS type
+
+    ID              shift and go to state 48
+
+    parameter_list                 shift and go to state 49
+    parameter                      shift and go to state 50
+
+state 27
+
+    (31) expression -> LPAREN . expression RPAREN
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 51
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 28
+
+    (44) if_statement -> IF LPAREN expression . RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> IF LPAREN expression . RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          shift and go to state 52
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 29
+
+    (2) expression -> MINUS . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 65
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 30
+
+    (17) expression -> term .
+
+    RPAREN          reduce using rule 17 (expression -> term .)
+    PLUS            reduce using rule 17 (expression -> term .)
+    MINUS           reduce using rule 17 (expression -> term .)
+    TIMES           reduce using rule 17 (expression -> term .)
+    DIVIDE          reduce using rule 17 (expression -> term .)
+    LOGICAL_AND     reduce using rule 17 (expression -> term .)
+    LOGICAL_OR      reduce using rule 17 (expression -> term .)
+    LOGICAL_EQUAL   reduce using rule 17 (expression -> term .)
+    GREATER_THAN    reduce using rule 17 (expression -> term .)
+    LESS_THAN       reduce using rule 17 (expression -> term .)
+    NOT_EQUAL       reduce using rule 17 (expression -> term .)
+    GREATER_THAN_EQUAL reduce using rule 17 (expression -> term .)
+    LESS_THAN_EQUAL reduce using rule 17 (expression -> term .)
+    VAL             reduce using rule 17 (expression -> term .)
+    VAR             reduce using rule 17 (expression -> term .)
+    FUN             reduce using rule 17 (expression -> term .)
+    IF              reduce using rule 17 (expression -> term .)
+    WHILE           reduce using rule 17 (expression -> term .)
+    PRINT           reduce using rule 17 (expression -> term .)
+    $end            reduce using rule 17 (expression -> term .)
+    RBRACE          reduce using rule 17 (expression -> term .)
+
+
+state 31
+
+    (25) expression -> LOGICAL_NOT . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 66
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 32
+
+    (32) term -> Literal .
+
+    RPAREN          reduce using rule 32 (term -> Literal .)
+    PLUS            reduce using rule 32 (term -> Literal .)
+    MINUS           reduce using rule 32 (term -> Literal .)
+    TIMES           reduce using rule 32 (term -> Literal .)
+    DIVIDE          reduce using rule 32 (term -> Literal .)
+    LOGICAL_AND     reduce using rule 32 (term -> Literal .)
+    LOGICAL_OR      reduce using rule 32 (term -> Literal .)
+    LOGICAL_EQUAL   reduce using rule 32 (term -> Literal .)
+    GREATER_THAN    reduce using rule 32 (term -> Literal .)
+    LESS_THAN       reduce using rule 32 (term -> Literal .)
+    NOT_EQUAL       reduce using rule 32 (term -> Literal .)
+    GREATER_THAN_EQUAL reduce using rule 32 (term -> Literal .)
+    LESS_THAN_EQUAL reduce using rule 32 (term -> Literal .)
+    VAL             reduce using rule 32 (term -> Literal .)
+    VAR             reduce using rule 32 (term -> Literal .)
+    FUN             reduce using rule 32 (term -> Literal .)
+    IF              reduce using rule 32 (term -> Literal .)
+    WHILE           reduce using rule 32 (term -> Literal .)
+    PRINT           reduce using rule 32 (term -> Literal .)
+    $end            reduce using rule 32 (term -> Literal .)
+    RBRACE          reduce using rule 32 (term -> Literal .)
+
+
+state 33
+
+    (33) term -> ID .
+
+    RPAREN          reduce using rule 33 (term -> ID .)
+    PLUS            reduce using rule 33 (term -> ID .)
+    MINUS           reduce using rule 33 (term -> ID .)
+    TIMES           reduce using rule 33 (term -> ID .)
+    DIVIDE          reduce using rule 33 (term -> ID .)
+    LOGICAL_AND     reduce using rule 33 (term -> ID .)
+    LOGICAL_OR      reduce using rule 33 (term -> ID .)
+    LOGICAL_EQUAL   reduce using rule 33 (term -> ID .)
+    GREATER_THAN    reduce using rule 33 (term -> ID .)
+    LESS_THAN       reduce using rule 33 (term -> ID .)
+    NOT_EQUAL       reduce using rule 33 (term -> ID .)
+    GREATER_THAN_EQUAL reduce using rule 33 (term -> ID .)
+    LESS_THAN_EQUAL reduce using rule 33 (term -> ID .)
+    VAL             reduce using rule 33 (term -> ID .)
+    VAR             reduce using rule 33 (term -> ID .)
+    FUN             reduce using rule 33 (term -> ID .)
+    IF              reduce using rule 33 (term -> ID .)
+    WHILE           reduce using rule 33 (term -> ID .)
+    PRINT           reduce using rule 33 (term -> ID .)
+    $end            reduce using rule 33 (term -> ID .)
+    RBRACE          reduce using rule 33 (term -> ID .)
+
+
+state 34
+
+    (34) Literal -> INTEGER_LITERAL .
+
+    RPAREN          reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    PLUS            reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    MINUS           reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    TIMES           reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    DIVIDE          reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    LOGICAL_AND     reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    LOGICAL_OR      reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    LOGICAL_EQUAL   reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    GREATER_THAN    reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    LESS_THAN       reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    NOT_EQUAL       reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    GREATER_THAN_EQUAL reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    LESS_THAN_EQUAL reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    VAL             reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    VAR             reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    FUN             reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    IF              reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    WHILE           reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    PRINT           reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    $end            reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+    RBRACE          reduce using rule 34 (Literal -> INTEGER_LITERAL .)
+
+
+state 35
+
+    (35) Literal -> boolean .
+
+    RPAREN          reduce using rule 35 (Literal -> boolean .)
+    PLUS            reduce using rule 35 (Literal -> boolean .)
+    MINUS           reduce using rule 35 (Literal -> boolean .)
+    TIMES           reduce using rule 35 (Literal -> boolean .)
+    DIVIDE          reduce using rule 35 (Literal -> boolean .)
+    LOGICAL_AND     reduce using rule 35 (Literal -> boolean .)
+    LOGICAL_OR      reduce using rule 35 (Literal -> boolean .)
+    LOGICAL_EQUAL   reduce using rule 35 (Literal -> boolean .)
+    GREATER_THAN    reduce using rule 35 (Literal -> boolean .)
+    LESS_THAN       reduce using rule 35 (Literal -> boolean .)
+    NOT_EQUAL       reduce using rule 35 (Literal -> boolean .)
+    GREATER_THAN_EQUAL reduce using rule 35 (Literal -> boolean .)
+    LESS_THAN_EQUAL reduce using rule 35 (Literal -> boolean .)
+    VAL             reduce using rule 35 (Literal -> boolean .)
+    VAR             reduce using rule 35 (Literal -> boolean .)
+    FUN             reduce using rule 35 (Literal -> boolean .)
+    IF              reduce using rule 35 (Literal -> boolean .)
+    WHILE           reduce using rule 35 (Literal -> boolean .)
+    PRINT           reduce using rule 35 (Literal -> boolean .)
+    $end            reduce using rule 35 (Literal -> boolean .)
+    RBRACE          reduce using rule 35 (Literal -> boolean .)
+
+
+state 36
+
+    (36) Literal -> STRING_LITERAL .
+
+    RPAREN          reduce using rule 36 (Literal -> STRING_LITERAL .)
+    PLUS            reduce using rule 36 (Literal -> STRING_LITERAL .)
+    MINUS           reduce using rule 36 (Literal -> STRING_LITERAL .)
+    TIMES           reduce using rule 36 (Literal -> STRING_LITERAL .)
+    DIVIDE          reduce using rule 36 (Literal -> STRING_LITERAL .)
+    LOGICAL_AND     reduce using rule 36 (Literal -> STRING_LITERAL .)
+    LOGICAL_OR      reduce using rule 36 (Literal -> STRING_LITERAL .)
+    LOGICAL_EQUAL   reduce using rule 36 (Literal -> STRING_LITERAL .)
+    GREATER_THAN    reduce using rule 36 (Literal -> STRING_LITERAL .)
+    LESS_THAN       reduce using rule 36 (Literal -> STRING_LITERAL .)
+    NOT_EQUAL       reduce using rule 36 (Literal -> STRING_LITERAL .)
+    GREATER_THAN_EQUAL reduce using rule 36 (Literal -> STRING_LITERAL .)
+    LESS_THAN_EQUAL reduce using rule 36 (Literal -> STRING_LITERAL .)
+    VAL             reduce using rule 36 (Literal -> STRING_LITERAL .)
+    VAR             reduce using rule 36 (Literal -> STRING_LITERAL .)
+    FUN             reduce using rule 36 (Literal -> STRING_LITERAL .)
+    IF              reduce using rule 36 (Literal -> STRING_LITERAL .)
+    WHILE           reduce using rule 36 (Literal -> STRING_LITERAL .)
+    PRINT           reduce using rule 36 (Literal -> STRING_LITERAL .)
+    $end            reduce using rule 36 (Literal -> STRING_LITERAL .)
+    RBRACE          reduce using rule 36 (Literal -> STRING_LITERAL .)
+
+
+state 37
+
+    (37) boolean -> TRUE .
+
+    RPAREN          reduce using rule 37 (boolean -> TRUE .)
+    PLUS            reduce using rule 37 (boolean -> TRUE .)
+    MINUS           reduce using rule 37 (boolean -> TRUE .)
+    TIMES           reduce using rule 37 (boolean -> TRUE .)
+    DIVIDE          reduce using rule 37 (boolean -> TRUE .)
+    LOGICAL_AND     reduce using rule 37 (boolean -> TRUE .)
+    LOGICAL_OR      reduce using rule 37 (boolean -> TRUE .)
+    LOGICAL_EQUAL   reduce using rule 37 (boolean -> TRUE .)
+    GREATER_THAN    reduce using rule 37 (boolean -> TRUE .)
+    LESS_THAN       reduce using rule 37 (boolean -> TRUE .)
+    NOT_EQUAL       reduce using rule 37 (boolean -> TRUE .)
+    GREATER_THAN_EQUAL reduce using rule 37 (boolean -> TRUE .)
+    LESS_THAN_EQUAL reduce using rule 37 (boolean -> TRUE .)
+    VAL             reduce using rule 37 (boolean -> TRUE .)
+    VAR             reduce using rule 37 (boolean -> TRUE .)
+    FUN             reduce using rule 37 (boolean -> TRUE .)
+    IF              reduce using rule 37 (boolean -> TRUE .)
+    WHILE           reduce using rule 37 (boolean -> TRUE .)
+    PRINT           reduce using rule 37 (boolean -> TRUE .)
+    $end            reduce using rule 37 (boolean -> TRUE .)
+    RBRACE          reduce using rule 37 (boolean -> TRUE .)
+
+
+state 38
+
+    (38) boolean -> FALSE .
+
+    RPAREN          reduce using rule 38 (boolean -> FALSE .)
+    PLUS            reduce using rule 38 (boolean -> FALSE .)
+    MINUS           reduce using rule 38 (boolean -> FALSE .)
+    TIMES           reduce using rule 38 (boolean -> FALSE .)
+    DIVIDE          reduce using rule 38 (boolean -> FALSE .)
+    LOGICAL_AND     reduce using rule 38 (boolean -> FALSE .)
+    LOGICAL_OR      reduce using rule 38 (boolean -> FALSE .)
+    LOGICAL_EQUAL   reduce using rule 38 (boolean -> FALSE .)
+    GREATER_THAN    reduce using rule 38 (boolean -> FALSE .)
+    LESS_THAN       reduce using rule 38 (boolean -> FALSE .)
+    NOT_EQUAL       reduce using rule 38 (boolean -> FALSE .)
+    GREATER_THAN_EQUAL reduce using rule 38 (boolean -> FALSE .)
+    LESS_THAN_EQUAL reduce using rule 38 (boolean -> FALSE .)
+    VAL             reduce using rule 38 (boolean -> FALSE .)
+    VAR             reduce using rule 38 (boolean -> FALSE .)
+    FUN             reduce using rule 38 (boolean -> FALSE .)
+    IF              reduce using rule 38 (boolean -> FALSE .)
+    WHILE           reduce using rule 38 (boolean -> FALSE .)
+    PRINT           reduce using rule 38 (boolean -> FALSE .)
+    $end            reduce using rule 38 (boolean -> FALSE .)
+    RBRACE          reduce using rule 38 (boolean -> FALSE .)
+
+
+state 39
+
+    (46) while_statement -> WHILE LPAREN expression . RPAREN LBRACE statement_list RBRACE
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          shift and go to state 67
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 40
+
+    (47) output_statement -> PRINT LPAREN expression . RPAREN
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          shift and go to state 68
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 41
+
+    (10) variable_declaration -> VAL ID COLONS type . EQUAL expression
+
+    EQUAL           shift and go to state 69
+
+
+state 42
+
+    (14) type -> INT .
+
+    EQUAL           reduce using rule 14 (type -> INT .)
+    RPAREN          reduce using rule 14 (type -> INT .)
+    COMMA           reduce using rule 14 (type -> INT .)
+
+
+state 43
+
+    (15) type -> STRING .
+
+    EQUAL           reduce using rule 15 (type -> STRING .)
+    RPAREN          reduce using rule 15 (type -> STRING .)
+    COMMA           reduce using rule 15 (type -> STRING .)
+
+
+state 44
+
+    (16) type -> BOOLEAN .
+
+    EQUAL           reduce using rule 16 (type -> BOOLEAN .)
+    RPAREN          reduce using rule 16 (type -> BOOLEAN .)
+    COMMA           reduce using rule 16 (type -> BOOLEAN .)
+
+
+state 45
+
+    (12) variable_declaration -> VAL ID EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    VAL             reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    VAR             reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    FUN             reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    IF              reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    WHILE           reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    PRINT           reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    $end            reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    RBRACE          reduce using rule 12 (variable_declaration -> VAL ID EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 46
+
+    (11) variable_declaration -> VAR ID COLONS type . EQUAL expression
+
+    EQUAL           shift and go to state 70
+
+
+state 47
+
+    (13) variable_declaration -> VAR ID EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    VAL             reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    VAR             reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    FUN             reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    IF              reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    WHILE           reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    PRINT           reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    $end            reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    RBRACE          reduce using rule 13 (variable_declaration -> VAR ID EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 48
+
+    (43) parameter -> ID . COLONS type
+
+    COLONS          shift and go to state 71
+
+
+state 49
+
+    (40) function_declaration -> FUN ID LPAREN parameter_list . RPAREN LBRACE statement_list RBRACE
+    (42) parameter_list -> parameter_list . COMMA parameter
+
+    RPAREN          shift and go to state 72
+    COMMA           shift and go to state 73
+
+
+state 50
+
+    (41) parameter_list -> parameter .
+
+    RPAREN          reduce using rule 41 (parameter_list -> parameter .)
+    COMMA           reduce using rule 41 (parameter_list -> parameter .)
+
+
+state 51
+
+    (31) expression -> LPAREN expression . RPAREN
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          shift and go to state 74
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 52
+
+    (44) if_statement -> IF LPAREN expression RPAREN . LBRACE statement_list RBRACE
+    (45) if_statement -> IF LPAREN expression RPAREN . LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+
+    LBRACE          shift and go to state 75
+
+
+state 53
+
+    (18) expression -> expression PLUS . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 76
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 54
+
+    (19) expression -> expression MINUS . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 77
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 55
+
+    (20) expression -> expression TIMES . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 78
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 56
+
+    (21) expression -> expression DIVIDE . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 79
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 57
+
+    (22) expression -> expression LOGICAL_AND . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 80
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 58
+
+    (23) expression -> expression LOGICAL_OR . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 81
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 59
+
+    (24) expression -> expression LOGICAL_EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 82
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 60
+
+    (26) expression -> expression GREATER_THAN . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 83
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 61
+
+    (27) expression -> expression LESS_THAN . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 84
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 62
+
+    (28) expression -> expression NOT_EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 85
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 63
+
+    (29) expression -> expression GREATER_THAN_EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 86
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 64
+
+    (30) expression -> expression LESS_THAN_EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 87
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 65
+
+    (2) expression -> MINUS expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 2 (expression -> MINUS expression .)
+    PLUS            reduce using rule 2 (expression -> MINUS expression .)
+    MINUS           reduce using rule 2 (expression -> MINUS expression .)
+    TIMES           reduce using rule 2 (expression -> MINUS expression .)
+    DIVIDE          reduce using rule 2 (expression -> MINUS expression .)
+    LOGICAL_AND     reduce using rule 2 (expression -> MINUS expression .)
+    LOGICAL_OR      reduce using rule 2 (expression -> MINUS expression .)
+    LOGICAL_EQUAL   reduce using rule 2 (expression -> MINUS expression .)
+    GREATER_THAN    reduce using rule 2 (expression -> MINUS expression .)
+    LESS_THAN       reduce using rule 2 (expression -> MINUS expression .)
+    NOT_EQUAL       reduce using rule 2 (expression -> MINUS expression .)
+    GREATER_THAN_EQUAL reduce using rule 2 (expression -> MINUS expression .)
+    LESS_THAN_EQUAL reduce using rule 2 (expression -> MINUS expression .)
+    VAL             reduce using rule 2 (expression -> MINUS expression .)
+    VAR             reduce using rule 2 (expression -> MINUS expression .)
+    FUN             reduce using rule 2 (expression -> MINUS expression .)
+    IF              reduce using rule 2 (expression -> MINUS expression .)
+    WHILE           reduce using rule 2 (expression -> MINUS expression .)
+    PRINT           reduce using rule 2 (expression -> MINUS expression .)
+    $end            reduce using rule 2 (expression -> MINUS expression .)
+    RBRACE          reduce using rule 2 (expression -> MINUS expression .)
+
+  ! PLUS            [ shift and go to state 53 ]
+  ! MINUS           [ shift and go to state 54 ]
+  ! TIMES           [ shift and go to state 55 ]
+  ! DIVIDE          [ shift and go to state 56 ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 66
+
+    (25) expression -> LOGICAL_NOT expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    PLUS            reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    MINUS           reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    TIMES           reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    DIVIDE          reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    LOGICAL_AND     reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    LOGICAL_OR      reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    LOGICAL_EQUAL   reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    GREATER_THAN    reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    LESS_THAN       reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    NOT_EQUAL       reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    GREATER_THAN_EQUAL reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    LESS_THAN_EQUAL reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    VAL             reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    VAR             reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    FUN             reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    IF              reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    WHILE           reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    PRINT           reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    $end            reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+    RBRACE          reduce using rule 25 (expression -> LOGICAL_NOT expression .)
+
+  ! PLUS            [ shift and go to state 53 ]
+  ! MINUS           [ shift and go to state 54 ]
+  ! TIMES           [ shift and go to state 55 ]
+  ! DIVIDE          [ shift and go to state 56 ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 67
+
+    (46) while_statement -> WHILE LPAREN expression RPAREN . LBRACE statement_list RBRACE
+
+    LBRACE          shift and go to state 88
+
+
+state 68
+
+    (47) output_statement -> PRINT LPAREN expression RPAREN .
+
+    VAL             reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    VAR             reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    FUN             reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    IF              reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    WHILE           reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    PRINT           reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    $end            reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+    RBRACE          reduce using rule 47 (output_statement -> PRINT LPAREN expression RPAREN .)
+
+
+state 69
+
+    (10) variable_declaration -> VAL ID COLONS type EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 89
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 70
+
+    (11) variable_declaration -> VAR ID COLONS type EQUAL . expression
+    (2) expression -> . MINUS expression
+    (17) expression -> . term
+    (18) expression -> . expression PLUS expression
+    (19) expression -> . expression MINUS expression
+    (20) expression -> . expression TIMES expression
+    (21) expression -> . expression DIVIDE expression
+    (22) expression -> . expression LOGICAL_AND expression
+    (23) expression -> . expression LOGICAL_OR expression
+    (24) expression -> . expression LOGICAL_EQUAL expression
+    (25) expression -> . LOGICAL_NOT expression
+    (26) expression -> . expression GREATER_THAN expression
+    (27) expression -> . expression LESS_THAN expression
+    (28) expression -> . expression NOT_EQUAL expression
+    (29) expression -> . expression GREATER_THAN_EQUAL expression
+    (30) expression -> . expression LESS_THAN_EQUAL expression
+    (31) expression -> . LPAREN expression RPAREN
+    (32) term -> . Literal
+    (33) term -> . ID
+    (34) Literal -> . INTEGER_LITERAL
+    (35) Literal -> . boolean
+    (36) Literal -> . STRING_LITERAL
+    (37) boolean -> . TRUE
+    (38) boolean -> . FALSE
+
+    MINUS           shift and go to state 29
+    LOGICAL_NOT     shift and go to state 31
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 33
+    INTEGER_LITERAL shift and go to state 34
+    STRING_LITERAL  shift and go to state 36
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 38
+
+    expression                     shift and go to state 90
+    term                           shift and go to state 30
+    Literal                        shift and go to state 32
+    boolean                        shift and go to state 35
+
+state 71
+
+    (43) parameter -> ID COLONS . type
+    (14) type -> . INT
+    (15) type -> . STRING
+    (16) type -> . BOOLEAN
+
+    INT             shift and go to state 42
+    STRING          shift and go to state 43
+    BOOLEAN         shift and go to state 44
+
+    type                           shift and go to state 91
+
+state 72
+
+    (40) function_declaration -> FUN ID LPAREN parameter_list RPAREN . LBRACE statement_list RBRACE
+
+    LBRACE          shift and go to state 92
+
+
+state 73
+
+    (42) parameter_list -> parameter_list COMMA . parameter
+    (43) parameter -> . ID COLONS type
+
+    ID              shift and go to state 48
+
+    parameter                      shift and go to state 93
+
+state 74
+
+    (31) expression -> LPAREN expression RPAREN .
+
+    RPAREN          reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    LOGICAL_AND     reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    LOGICAL_OR      reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    LOGICAL_EQUAL   reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    GREATER_THAN    reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    LESS_THAN       reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    NOT_EQUAL       reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    GREATER_THAN_EQUAL reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    LESS_THAN_EQUAL reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    VAL             reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    VAR             reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    FUN             reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    IF              reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    WHILE           reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    PRINT           reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+    RBRACE          reduce using rule 31 (expression -> LPAREN expression RPAREN .)
+
+
+state 75
+
+    (44) if_statement -> IF LPAREN expression RPAREN LBRACE . statement_list RBRACE
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE . statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (3) statement_list -> . statement
+    (4) statement_list -> . statement_list statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement_list                 shift and go to state 94
+    statement                      shift and go to state 3
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 76
+
+    (18) expression -> expression PLUS expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 18 (expression -> expression PLUS expression .)
+    PLUS            reduce using rule 18 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 18 (expression -> expression PLUS expression .)
+    LOGICAL_AND     reduce using rule 18 (expression -> expression PLUS expression .)
+    LOGICAL_OR      reduce using rule 18 (expression -> expression PLUS expression .)
+    LOGICAL_EQUAL   reduce using rule 18 (expression -> expression PLUS expression .)
+    GREATER_THAN    reduce using rule 18 (expression -> expression PLUS expression .)
+    LESS_THAN       reduce using rule 18 (expression -> expression PLUS expression .)
+    NOT_EQUAL       reduce using rule 18 (expression -> expression PLUS expression .)
+    GREATER_THAN_EQUAL reduce using rule 18 (expression -> expression PLUS expression .)
+    LESS_THAN_EQUAL reduce using rule 18 (expression -> expression PLUS expression .)
+    VAL             reduce using rule 18 (expression -> expression PLUS expression .)
+    VAR             reduce using rule 18 (expression -> expression PLUS expression .)
+    FUN             reduce using rule 18 (expression -> expression PLUS expression .)
+    IF              reduce using rule 18 (expression -> expression PLUS expression .)
+    WHILE           reduce using rule 18 (expression -> expression PLUS expression .)
+    PRINT           reduce using rule 18 (expression -> expression PLUS expression .)
+    $end            reduce using rule 18 (expression -> expression PLUS expression .)
+    RBRACE          reduce using rule 18 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+
+  ! TIMES           [ reduce using rule 18 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 18 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 53 ]
+  ! MINUS           [ shift and go to state 54 ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 77
+
+    (19) expression -> expression MINUS expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 19 (expression -> expression MINUS expression .)
+    PLUS            reduce using rule 19 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 19 (expression -> expression MINUS expression .)
+    LOGICAL_AND     reduce using rule 19 (expression -> expression MINUS expression .)
+    LOGICAL_OR      reduce using rule 19 (expression -> expression MINUS expression .)
+    LOGICAL_EQUAL   reduce using rule 19 (expression -> expression MINUS expression .)
+    GREATER_THAN    reduce using rule 19 (expression -> expression MINUS expression .)
+    LESS_THAN       reduce using rule 19 (expression -> expression MINUS expression .)
+    NOT_EQUAL       reduce using rule 19 (expression -> expression MINUS expression .)
+    GREATER_THAN_EQUAL reduce using rule 19 (expression -> expression MINUS expression .)
+    LESS_THAN_EQUAL reduce using rule 19 (expression -> expression MINUS expression .)
+    VAL             reduce using rule 19 (expression -> expression MINUS expression .)
+    VAR             reduce using rule 19 (expression -> expression MINUS expression .)
+    FUN             reduce using rule 19 (expression -> expression MINUS expression .)
+    IF              reduce using rule 19 (expression -> expression MINUS expression .)
+    WHILE           reduce using rule 19 (expression -> expression MINUS expression .)
+    PRINT           reduce using rule 19 (expression -> expression MINUS expression .)
+    $end            reduce using rule 19 (expression -> expression MINUS expression .)
+    RBRACE          reduce using rule 19 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+
+  ! TIMES           [ reduce using rule 19 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 19 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 53 ]
+  ! MINUS           [ shift and go to state 54 ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 78
+
+    (20) expression -> expression TIMES expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 20 (expression -> expression TIMES expression .)
+    PLUS            reduce using rule 20 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 20 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 20 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 20 (expression -> expression TIMES expression .)
+    LOGICAL_AND     reduce using rule 20 (expression -> expression TIMES expression .)
+    LOGICAL_OR      reduce using rule 20 (expression -> expression TIMES expression .)
+    LOGICAL_EQUAL   reduce using rule 20 (expression -> expression TIMES expression .)
+    GREATER_THAN    reduce using rule 20 (expression -> expression TIMES expression .)
+    LESS_THAN       reduce using rule 20 (expression -> expression TIMES expression .)
+    NOT_EQUAL       reduce using rule 20 (expression -> expression TIMES expression .)
+    GREATER_THAN_EQUAL reduce using rule 20 (expression -> expression TIMES expression .)
+    LESS_THAN_EQUAL reduce using rule 20 (expression -> expression TIMES expression .)
+    VAL             reduce using rule 20 (expression -> expression TIMES expression .)
+    VAR             reduce using rule 20 (expression -> expression TIMES expression .)
+    FUN             reduce using rule 20 (expression -> expression TIMES expression .)
+    IF              reduce using rule 20 (expression -> expression TIMES expression .)
+    WHILE           reduce using rule 20 (expression -> expression TIMES expression .)
+    PRINT           reduce using rule 20 (expression -> expression TIMES expression .)
+    $end            reduce using rule 20 (expression -> expression TIMES expression .)
+    RBRACE          reduce using rule 20 (expression -> expression TIMES expression .)
+
+  ! PLUS            [ shift and go to state 53 ]
+  ! MINUS           [ shift and go to state 54 ]
+  ! TIMES           [ shift and go to state 55 ]
+  ! DIVIDE          [ shift and go to state 56 ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 79
+
+    (21) expression -> expression DIVIDE expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 21 (expression -> expression DIVIDE expression .)
+    PLUS            reduce using rule 21 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 21 (expression -> expression DIVIDE expression .)
+    TIMES           reduce using rule 21 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 21 (expression -> expression DIVIDE expression .)
+    LOGICAL_AND     reduce using rule 21 (expression -> expression DIVIDE expression .)
+    LOGICAL_OR      reduce using rule 21 (expression -> expression DIVIDE expression .)
+    LOGICAL_EQUAL   reduce using rule 21 (expression -> expression DIVIDE expression .)
+    GREATER_THAN    reduce using rule 21 (expression -> expression DIVIDE expression .)
+    LESS_THAN       reduce using rule 21 (expression -> expression DIVIDE expression .)
+    NOT_EQUAL       reduce using rule 21 (expression -> expression DIVIDE expression .)
+    GREATER_THAN_EQUAL reduce using rule 21 (expression -> expression DIVIDE expression .)
+    LESS_THAN_EQUAL reduce using rule 21 (expression -> expression DIVIDE expression .)
+    VAL             reduce using rule 21 (expression -> expression DIVIDE expression .)
+    VAR             reduce using rule 21 (expression -> expression DIVIDE expression .)
+    FUN             reduce using rule 21 (expression -> expression DIVIDE expression .)
+    IF              reduce using rule 21 (expression -> expression DIVIDE expression .)
+    WHILE           reduce using rule 21 (expression -> expression DIVIDE expression .)
+    PRINT           reduce using rule 21 (expression -> expression DIVIDE expression .)
+    $end            reduce using rule 21 (expression -> expression DIVIDE expression .)
+    RBRACE          reduce using rule 21 (expression -> expression DIVIDE expression .)
+
+  ! PLUS            [ shift and go to state 53 ]
+  ! MINUS           [ shift and go to state 54 ]
+  ! TIMES           [ shift and go to state 55 ]
+  ! DIVIDE          [ shift and go to state 56 ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 80
+
+    (22) expression -> expression LOGICAL_AND expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    LOGICAL_AND     reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    LOGICAL_OR      reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    VAL             reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    VAR             reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    FUN             reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    IF              reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    WHILE           reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    PRINT           reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    $end            reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    RBRACE          reduce using rule 22 (expression -> expression LOGICAL_AND expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+  ! PLUS            [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! MINUS           [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! TIMES           [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! DIVIDE          [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! LOGICAL_EQUAL   [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! GREATER_THAN    [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! LESS_THAN       [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! NOT_EQUAL       [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! GREATER_THAN_EQUAL [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! LESS_THAN_EQUAL [ reduce using rule 22 (expression -> expression LOGICAL_AND expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+
+
+state 81
+
+    (23) expression -> expression LOGICAL_OR expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    LOGICAL_OR      reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    VAL             reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    VAR             reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    FUN             reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    IF              reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    WHILE           reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    PRINT           reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    $end            reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    RBRACE          reduce using rule 23 (expression -> expression LOGICAL_OR expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+  ! PLUS            [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! MINUS           [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! TIMES           [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! DIVIDE          [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! LOGICAL_AND     [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! LOGICAL_EQUAL   [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! GREATER_THAN    [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! LESS_THAN       [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! NOT_EQUAL       [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! GREATER_THAN_EQUAL [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! LESS_THAN_EQUAL [ reduce using rule 23 (expression -> expression LOGICAL_OR expression .) ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+
+
+state 82
+
+    (24) expression -> expression LOGICAL_EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    LOGICAL_AND     reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    LOGICAL_OR      reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    LOGICAL_EQUAL   reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    NOT_EQUAL       reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    VAL             reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    VAR             reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    FUN             reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    IF              reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    WHILE           reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    PRINT           reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    $end            reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    RBRACE          reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+  ! PLUS            [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! TIMES           [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! GREATER_THAN    [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! LESS_THAN       [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! GREATER_THAN_EQUAL [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! LESS_THAN_EQUAL [ reduce using rule 24 (expression -> expression LOGICAL_EQUAL expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+
+
+state 83
+
+    (26) expression -> expression GREATER_THAN expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    LOGICAL_AND     reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    LOGICAL_OR      reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    LOGICAL_EQUAL   reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    GREATER_THAN    reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    LESS_THAN       reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    NOT_EQUAL       reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    GREATER_THAN_EQUAL reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    LESS_THAN_EQUAL reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    VAL             reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    VAR             reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    FUN             reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    IF              reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    WHILE           reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    PRINT           reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    $end            reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    RBRACE          reduce using rule 26 (expression -> expression GREATER_THAN expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+
+  ! PLUS            [ reduce using rule 26 (expression -> expression GREATER_THAN expression .) ]
+  ! MINUS           [ reduce using rule 26 (expression -> expression GREATER_THAN expression .) ]
+  ! TIMES           [ reduce using rule 26 (expression -> expression GREATER_THAN expression .) ]
+  ! DIVIDE          [ reduce using rule 26 (expression -> expression GREATER_THAN expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 84
+
+    (27) expression -> expression LESS_THAN expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    LOGICAL_AND     reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    LOGICAL_OR      reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    LOGICAL_EQUAL   reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    GREATER_THAN    reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    LESS_THAN       reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    NOT_EQUAL       reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    GREATER_THAN_EQUAL reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    LESS_THAN_EQUAL reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    VAL             reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    VAR             reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    FUN             reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    IF              reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    WHILE           reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    PRINT           reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    $end            reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    RBRACE          reduce using rule 27 (expression -> expression LESS_THAN expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+
+  ! PLUS            [ reduce using rule 27 (expression -> expression LESS_THAN expression .) ]
+  ! MINUS           [ reduce using rule 27 (expression -> expression LESS_THAN expression .) ]
+  ! TIMES           [ reduce using rule 27 (expression -> expression LESS_THAN expression .) ]
+  ! DIVIDE          [ reduce using rule 27 (expression -> expression LESS_THAN expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 85
+
+    (28) expression -> expression NOT_EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    LOGICAL_AND     reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    LOGICAL_OR      reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    LOGICAL_EQUAL   reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    NOT_EQUAL       reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    VAL             reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    VAR             reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    FUN             reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    IF              reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    WHILE           reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    PRINT           reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    $end            reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    RBRACE          reduce using rule 28 (expression -> expression NOT_EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+  ! PLUS            [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! TIMES           [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! GREATER_THAN    [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! LESS_THAN       [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! GREATER_THAN_EQUAL [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! LESS_THAN_EQUAL [ reduce using rule 28 (expression -> expression NOT_EQUAL expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+
+
+state 86
+
+    (29) expression -> expression GREATER_THAN_EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LOGICAL_AND     reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LOGICAL_OR      reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LOGICAL_EQUAL   reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    GREATER_THAN    reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LESS_THAN       reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    NOT_EQUAL       reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    GREATER_THAN_EQUAL reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LESS_THAN_EQUAL reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    VAL             reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    VAR             reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    FUN             reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    IF              reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    WHILE           reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    PRINT           reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    $end            reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    RBRACE          reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+
+  ! PLUS            [ reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .) ]
+  ! TIMES           [ reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 29 (expression -> expression GREATER_THAN_EQUAL expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 87
+
+    (30) expression -> expression LESS_THAN_EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    RPAREN          reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    LOGICAL_AND     reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    LOGICAL_OR      reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    LOGICAL_EQUAL   reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    GREATER_THAN    reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    LESS_THAN       reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    NOT_EQUAL       reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    GREATER_THAN_EQUAL reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    LESS_THAN_EQUAL reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    VAL             reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    VAR             reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    FUN             reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    IF              reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    WHILE           reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    PRINT           reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    $end            reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    RBRACE          reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+
+  ! PLUS            [ reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .) ]
+  ! TIMES           [ reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 30 (expression -> expression LESS_THAN_EQUAL expression .) ]
+  ! LOGICAL_AND     [ shift and go to state 57 ]
+  ! LOGICAL_OR      [ shift and go to state 58 ]
+  ! LOGICAL_EQUAL   [ shift and go to state 59 ]
+  ! GREATER_THAN    [ shift and go to state 60 ]
+  ! LESS_THAN       [ shift and go to state 61 ]
+  ! NOT_EQUAL       [ shift and go to state 62 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 63 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 64 ]
+
+
+state 88
+
+    (46) while_statement -> WHILE LPAREN expression RPAREN LBRACE . statement_list RBRACE
+    (3) statement_list -> . statement
+    (4) statement_list -> . statement_list statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement_list                 shift and go to state 95
+    statement                      shift and go to state 3
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 89
+
+    (10) variable_declaration -> VAL ID COLONS type EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    VAL             reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    VAR             reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    FUN             reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    IF              reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    WHILE           reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    PRINT           reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    $end            reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    RBRACE          reduce using rule 10 (variable_declaration -> VAL ID COLONS type EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 90
+
+    (11) variable_declaration -> VAR ID COLONS type EQUAL expression .
+    (18) expression -> expression . PLUS expression
+    (19) expression -> expression . MINUS expression
+    (20) expression -> expression . TIMES expression
+    (21) expression -> expression . DIVIDE expression
+    (22) expression -> expression . LOGICAL_AND expression
+    (23) expression -> expression . LOGICAL_OR expression
+    (24) expression -> expression . LOGICAL_EQUAL expression
+    (26) expression -> expression . GREATER_THAN expression
+    (27) expression -> expression . LESS_THAN expression
+    (28) expression -> expression . NOT_EQUAL expression
+    (29) expression -> expression . GREATER_THAN_EQUAL expression
+    (30) expression -> expression . LESS_THAN_EQUAL expression
+
+    VAL             reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    VAR             reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    FUN             reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    IF              reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    WHILE           reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    PRINT           reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    $end            reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    RBRACE          reduce using rule 11 (variable_declaration -> VAR ID COLONS type EQUAL expression .)
+    PLUS            shift and go to state 53
+    MINUS           shift and go to state 54
+    TIMES           shift and go to state 55
+    DIVIDE          shift and go to state 56
+    LOGICAL_AND     shift and go to state 57
+    LOGICAL_OR      shift and go to state 58
+    LOGICAL_EQUAL   shift and go to state 59
+    GREATER_THAN    shift and go to state 60
+    LESS_THAN       shift and go to state 61
+    NOT_EQUAL       shift and go to state 62
+    GREATER_THAN_EQUAL shift and go to state 63
+    LESS_THAN_EQUAL shift and go to state 64
+
+
+state 91
+
+    (43) parameter -> ID COLONS type .
+
+    RPAREN          reduce using rule 43 (parameter -> ID COLONS type .)
+    COMMA           reduce using rule 43 (parameter -> ID COLONS type .)
+
+
+state 92
+
+    (40) function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE . statement_list RBRACE
+    (3) statement_list -> . statement
+    (4) statement_list -> . statement_list statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement_list                 shift and go to state 96
+    statement                      shift and go to state 3
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 93
+
+    (42) parameter_list -> parameter_list COMMA parameter .
+
+    RPAREN          reduce using rule 42 (parameter_list -> parameter_list COMMA parameter .)
+    COMMA           reduce using rule 42 (parameter_list -> parameter_list COMMA parameter .)
+
+
+state 94
+
+    (44) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list . RBRACE
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list . RBRACE ELSE LBRACE statement_list RBRACE
+    (4) statement_list -> statement_list . statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    RBRACE          shift and go to state 97
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement                      shift and go to state 15
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 95
+
+    (46) while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list . RBRACE
+    (4) statement_list -> statement_list . statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    RBRACE          shift and go to state 98
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement                      shift and go to state 15
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 96
+
+    (40) function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list . RBRACE
+    (4) statement_list -> statement_list . statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    RBRACE          shift and go to state 99
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement                      shift and go to state 15
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 97
+
+    (44) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE . ELSE LBRACE statement_list RBRACE
+
+    VAL             reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    VAR             reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    FUN             reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    IF              reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    WHILE           reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    PRINT           reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    $end            reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    RBRACE          reduce using rule 44 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    ELSE            shift and go to state 100
+
+
+state 98
+
+    (46) while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .
+
+    VAL             reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    VAR             reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    FUN             reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    IF              reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    WHILE           reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    PRINT           reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    $end            reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+    RBRACE          reduce using rule 46 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
+
+
+state 99
+
+    (40) function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .
+
+    VAL             reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    VAR             reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    FUN             reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    IF              reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    WHILE           reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    PRINT           reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    $end            reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+    RBRACE          reduce using rule 40 (function_declaration -> FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE .)
+
+
+state 100
+
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE . LBRACE statement_list RBRACE
+
+    LBRACE          shift and go to state 101
+
+
+state 101
+
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE . statement_list RBRACE
+    (3) statement_list -> . statement
+    (4) statement_list -> . statement_list statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement_list                 shift and go to state 102
+    statement                      shift and go to state 3
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 102
+
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list . RBRACE
+    (4) statement_list -> statement_list . statement
+    (5) statement -> . variable_declaration
+    (6) statement -> . function_declaration
+    (7) statement -> . if_statement
+    (8) statement -> . while_statement
+    (9) statement -> . output_statement
+    (10) variable_declaration -> . VAL ID COLONS type EQUAL expression
+    (11) variable_declaration -> . VAR ID COLONS type EQUAL expression
+    (12) variable_declaration -> . VAL ID EQUAL expression
+    (13) variable_declaration -> . VAR ID EQUAL expression
+    (40) function_declaration -> . FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+    (44) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (45) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+    (46) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (47) output_statement -> . PRINT LPAREN expression RPAREN
+
+    RBRACE          shift and go to state 103
+    VAL             shift and go to state 9
+    VAR             shift and go to state 10
+    FUN             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+
+    statement                      shift and go to state 15
+    variable_declaration           shift and go to state 4
+    function_declaration           shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    output_statement               shift and go to state 8
+
+state 103
+
+    (45) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .
+
+    VAL             reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    VAR             reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    FUN             reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    IF              reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    WHILE           reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    PRINT           reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    $end            reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+    RBRACE          reduce using rule 45 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE .)
+

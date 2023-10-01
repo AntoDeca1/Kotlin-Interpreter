@@ -36,7 +36,10 @@ def p_statement_list(p):
 
 def p_statement(p):
     '''statement : variable_declaration
-                 | function_declaration'''
+                 | function_declaration
+                 | if_statement
+                 | while_statement
+                 | output_statement'''
     p[0] = p[1]
 
 
@@ -59,19 +62,22 @@ def p_type(p):
 
 
 def p_expression(p):
-    '''expression : aritmetic_expression
-                  | boolean_expression
-                  | string_expression'''
-    p[0] = p[1]
-
-
-def p_aritmetic_expression(p):
-    '''aritmetic_expression : INTEGER_LITERAL
-                            | aritmetic_expression PLUS aritmetic_expression
-                            | aritmetic_expression MINUS aritmetic_expression
-                            | aritmetic_expression TIMES aritmetic_expression
-                            | aritmetic_expression DIVIDE aritmetic_expression
-                            | LPAREN aritmetic_expression RPAREN'''
+    '''expression : term
+                  | expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression
+                  | expression LOGICAL_AND expression
+                  | expression LOGICAL_OR expression
+                  | expression LOGICAL_EQUAL expression
+                  | LOGICAL_NOT expression
+                  | expression GREATER_THAN expression
+                  | expression LESS_THAN expression
+                  | expression NOT_EQUAL expression
+                  | expression GREATER_THAN_EQUAL expression
+                  | expression LESS_THAN_EQUAL expression
+                  | LPAREN expression RPAREN '''
+    print("Ciao")
     if len(p) == 2:
         p[0] = p[1]
     elif p[2] == "+":
@@ -80,36 +86,6 @@ def p_aritmetic_expression(p):
         p[0] = p[1] - p[3]
     elif p[2] == "*":
         p[0] = p[1] * p[3]
-    else:
-        p[0] = p[2]
-
-
-def p_string_expression(p):
-    '''string_expression : STRING_LITERAL
-                         | string_expression PLUS string_expression
-                         | LPAREN string_expression RPAREN '''
-    if len(p) == 2:
-        p[0] = p[1]
-    elif p[2] == "+":
-        p[0] = p[1] + p[3]
-    else:
-        p[0] = p[2]
-
-
-def p_boolean_expression(p):
-    '''boolean_expression : boolean
-                         | boolean_expression LOGICAL_AND boolean_expression
-                         | boolean_expression LOGICAL_OR boolean_expression
-                         | LOGICAL_NOT boolean_expression
-                         | aritmetic_expression GREATER_THAN aritmetic_expression
-                         | aritmetic_expression LESS_THAN aritmetic_expression
-                         | aritmetic_expression LOGICAL_EQUAL aritmetic_expression
-                         | aritmetic_expression NOT_EQUAL aritmetic_expression
-                         | aritmetic_expression GREATER_THAN_EQUAL aritmetic_expression
-                         | aritmetic_expression LESS_THAN_EQUAL aritmetic_expression
-                         | LPAREN boolean_expression RPAREN '''
-    if len(p) == 2:
-        p[0] = p[1]
     elif p[2] == "&&":
         p[0] = p[1] and p[3]
     elif p[2] == "||":
@@ -130,6 +106,22 @@ def p_boolean_expression(p):
         p[0] = p[1] <= p[3]
     else:
         p[0] = p[2]
+
+
+def p_term(p):
+    '''term : Literal
+            | ID'''
+    if isinstance(p[1], str) and len(p[1]) == 1:
+        p[0] = 5
+    else:
+        p[0] = p[1]
+
+
+def p_literal(p):
+    '''Literal : INTEGER_LITERAL
+               | boolean
+               | STRING_LITERAL'''
+    p[0] = p[1]
 
 
 def p_boolean(p):
@@ -165,6 +157,31 @@ def p_parameter_list(p):
 def p_parameter(p):
     '''parameter : ID COLONS type'''
     p[0] = p[1]
+
+
+# NEW(Starting to introduce the if else statement)
+def p_if_statement(p):
+    '''if_statement : IF LPAREN expression RPAREN LBRACE statement_list RBRACE
+                    | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'''
+    p[0] = ("if", p[3])
+
+
+# NEW(Starting to introduce the while statement)
+def p_while_statement(p):
+    '''while_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE'''
+    p[0] = ("while", p[3])
+
+
+# NEW(Starting to introduce the input statement)
+# def p_input_statement(p):
+#     '''input_statement : READLINE LPAREN expression'''
+#     pass
+
+
+# NEW(Starting to introduce the output statement)
+def p_output_statement(p):
+    '''output_statement : PRINT LPAREN expression RPAREN'''
+    p[0] = ("print", p[3])
 
 
 # PANIC MODE

@@ -39,7 +39,7 @@ reserved = {
     'Int': 'INT',
     'Boolean': 'BOOLEAN',
     'String': 'STRING',
-    'println': 'PRINT',
+    'print': 'PRINT',
     'true': 'TRUE',
     'false': 'FALSE',
     'var': 'VAR',
@@ -111,13 +111,14 @@ def t_ID(t):
 
 
 lexer = lex.lex()
-input_sentence = '''fun prova(x:String,y:String){val x=5} '''
-
-lexer.input(input_sentence)
-
-# Step 3: Iterate over the tokens
-while True:
-    token = lexer.token()
-    if not token:
-        break  # No more tokens
-    print(token)
+# input_sentence = '''val x = (3>x) && (2>3)
+#                    '''
+#
+# lexer.input(input_sentence)
+#
+# # Step 3: Iterate over the tokens
+# while True:
+#     token = lexer.token()
+#     if not token:
+#         break  # No more tokens
+#     print(token)
