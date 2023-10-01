@@ -97,7 +97,8 @@ def t_INTEGER_LITERAL(t):
     return t
 
 
-def t_STRING_LITERAL(t):
+def t_STRING_LITERAL\
+                (t):
     r'\"[^\"]*\"'
     t.value = t.value[1:-1]
     return t

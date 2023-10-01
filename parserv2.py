@@ -15,6 +15,11 @@ precedence = (
 )
 
 
+def p_empty(p):
+    'empty :'
+    pass
+
+
 def p_program(p):
     'program : statement_list'
     p[0] = p[1]
@@ -37,6 +42,7 @@ def p_statement_list(p):
 def p_statement(p):
     '''statement : variable_declaration
                  | function_declaration
+                 | function_calling
                  | if_statement
                  | while_statement
                  | output_statement'''
@@ -47,7 +53,7 @@ def p_variable_declaration(p):
     '''variable_declaration : VAL ID COLONS type EQUAL expression
                             | VAR ID COLONS type EQUAL expression
                             | VAL ID EQUAL expression
-                            | VAR ID EQUAL expression'''
+                            | VAR ID EQUAL expression  '''
     if len(p) == 6:
         p[0] = p[6]
     else:
@@ -141,13 +147,23 @@ def p_sync(p):
 # NEW(Starting to introduce the function definition)
 # TODO: function_declaration to be checked
 def p_function_declaration(p):
-    '''function_declaration : FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE'''
+    '''function_declaration : FUN ID LPAREN parameter_list RPAREN COLONS type LBRACE statement_list RBRACE
+                            | FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE'''
     p[0] = ('fun', p[4])
+
+
+def p_function_calling(p):
+    '''function_calling : ID LPAREN parameter_list RPAREN
+                        | VAL ID COLONS type EQUAL ID LPAREN parameter_list RPAREN
+                        | VAR ID COLONS type EQUAL ID LPAREN parameter_list RPAREN
+                        | VAL ID EQUAL ID LPAREN parameter_list RPAREN
+                        | VAR ID EQUAL ID LPAREN parameter_list RPAREN'''
+    p[0] = ('fun_call', p[3])
 
 
 def p_parameter_list(p):
     '''parameter_list : parameter
-                     | parameter_list COMMA parameter '''
+                     | parameter_list COMMA parameter'''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
@@ -155,20 +171,28 @@ def p_parameter_list(p):
 
 
 def p_parameter(p):
-    '''parameter : ID COLONS type'''
+    '''parameter : ID COLONS type
+                 | ID'''
     p[0] = p[1]
 
 
 # NEW(Starting to introduce the if else statement)
 def p_if_statement(p):
     '''if_statement : IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-                    | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'''
+                    | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
+                    | IF LPAREN expression RPAREN LBRACE RBRACE ELSE LBRACE statement_list RBRACE
+                    | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE RBRACE
+                    | IF LPAREN expression RPAREN LBRACE RBRACE ELSE LBRACE RBRACE
+                    | IF LPAREN expression RPAREN LBRACE RBRACE'''
+
+    # Introdotta la possibilità di avere anche if e else vuoti
     p[0] = ("if", p[3])
 
 
 # NEW(Starting to introduce the while statement)
 def p_while_statement(p):
-    '''while_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE'''
+    '''while_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
+                       | WHILE LPAREN expression RPAREN LBRACE RBRACE'''
     p[0] = ("while", p[3])
 
 
