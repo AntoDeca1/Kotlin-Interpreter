@@ -3,13 +3,11 @@ from lexer import lexer
 import pprint
 
 # Step 2: Tokenize the Input Sentence
-input_sentence = '''val x =6
-                    var y=12
-                    val z= x+y'''
+input_sentence = '''val x : Int = (3+5)* (4+12)'''
 lexer.input(input_sentence)
 
 # Step 4: Call the Parser
 parsed_result = parser.parse(lexer=lexer)
 
 # You can now use the parsed_result as needed
-pprint.pprint(parsed_result)
+print(parsed_result)
