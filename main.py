@@ -3,7 +3,7 @@ from lexer import lexer
 import pprint
 
 # Step 2: Tokenize the Input Sentence
-input_sentence = '''val x : Int = (3+5)* (4+12)'''
+input_sentence = '''if(x>4){val x=4}else{var k=x+5}'''
 lexer.input(input_sentence)
 
 # Step 4: Call the Parser

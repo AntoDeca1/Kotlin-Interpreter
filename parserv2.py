@@ -64,7 +64,15 @@ def p_sync(p):
 # TODO: function_declaration to be checked
 def p_function_declaration(p):
     '''function_declaration : FUN ID LPAREN parameter_list RPAREN COLONS type LBRACE statement_list RBRACE
-                            | FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE'''
+                            | FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
+                            | FUN ID LPAREN parameter_list RPAREN LBRACE RBRACE'''
+    id_node = Node("TermNode", leaf=p[2])
+    if len(p) == 10:
+        p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7], p[9]])
+    elif len(p) == 9:
+        p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7]])
+    else:
+        p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4]])
 
 
 def p_function_calling(p):
@@ -73,16 +81,40 @@ def p_function_calling(p):
                         | VAR ID COLONS type EQUAL ID LPAREN parameter_list RPAREN
                         | VAL ID EQUAL ID LPAREN parameter_list RPAREN
                         | VAR ID EQUAL ID LPAREN parameter_list RPAREN'''
+    if len(p) == 5:
+        id_node = Node("TermNode", leaf=p[1])
+        p[0] = Node("FunctionCallingNode", children=[id_node, p[3]])
+    elif len(p) == 10:
+        var_id_node = Node("TermNode", leaf=p[2])
+        fun_id_node = Node("TermNode", leaf=p[6])
+        function_calling_node = Node("FunctionCallingNode", children=[fun_id_node, p[8]])
+        p[0] = Node("VariableDeclarationNode", children=[var_id_node, p[4], p[7], function_calling_node], leaf=p[1])
+    else:
+        var_id_node = Node("TermNode", leaf=p[2])
+        fun_id_node = Node("TermNode", leaf=p[4])
+        function_calling_node = Node("FunctionCallingNode", children=[fun_id_node, p[6]])
+        p[0] = Node("VariableDeclarationNode", children=[var_id_node, function_calling_node], leaf=p[1])
 
 
 def p_parameter_list(p):
     '''parameter_list : parameter
                      | parameter_list COMMA parameter'''
+    if len(p) == 2:
+        p[0] = Node("ParameterList", children=[p[1]])
+    else:
+        p[1].add_child(p[3])
+        p[0] = p[1]
 
 
 def p_parameter(p):
     '''parameter : ID COLONS type
                  | ID'''
+    # Nel caso in cui siano una lista di id,semplicemente ritornare il termNode
+    id_node = Node("TermNode", leaf=p[1])
+    if len(p) == 4:
+        p[0] = Node("ParameterNode", children=[id_node, p[3]])
+    else:
+        p[0] = id_node
 
 
 # NEW(Starting to introduce the if else statement)
@@ -95,12 +127,31 @@ def p_if_statement(p):
                     | IF LPAREN expression RPAREN LBRACE RBRACE'''
 
     # Introdotta la possibilità di avere anche if e else vuoti
+    # TODO:Vedere se è meglio non mettere nulla quando non ci sono statement oppure creare un EmptyNode??(Per adesso non metto nulla)
+    if len(p) == 8:
+        p[0] = Node("IfStatementNode", children=[p[3], p[6]])
+    elif len(p) == 12:
+        p[0] = Node("If-else-StatementNode", children=[p[3], p[6], p[10]])
+    elif len(p) == 11 and isinstance(p[9], Node):
+        p[0] = Node("If-else-StatementNode", children=[p[3], Node("EmptyNode", leaf=" "), p[9]])
+    elif len(p) == 11 and isinstance(p[6], Node):
+        p[0] = Node("If-else-StatementNode", children=[p[3], p[6], Node("EmptyNode", leaf=" ")])
+    elif len(p) == 10 and isinstance(p[6], Node):
+        p[0] = Node("If-else-StatementNode", children=[p[3], Node("EmptyNode", leaf=" "), Node("EmptyNode", leaf=" ")])
+    else:
+        p[0] = Node("IfStatementNode", children=[p[3]])
 
 
 # NEW(Starting to introduce the while statement)
+
+
 def p_while_statement(p):
     '''while_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
                        | WHILE LPAREN expression RPAREN LBRACE RBRACE'''
+    if len(p) == 8:
+        p[0] = Node("WhileStatementNode", children=[p[3], p[6]])
+    else:
+        p[0] = Node("WhileStatementNode", children=[p[3], Node("EmptyNode", leaf=" ")])
 
 
 # NEW(Starting to introduce the input statement)
