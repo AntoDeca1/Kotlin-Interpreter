@@ -112,8 +112,8 @@ def t_ID(t):
 
 
 lexer = lex.lex()
-# input_sentence = '''val x = (3>x) && (2>3)
-#                    '''
+# input_sentence = '''val x= 10
+# while(x>5){x=x-3}'''
 #
 # lexer.input(input_sentence)
 #

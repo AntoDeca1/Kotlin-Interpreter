@@ -50,7 +50,8 @@ def p_statement(p):
                  | function_calling
                  | if_statement
                  | while_statement
-                 | output_statement'''
+                 | output_statement
+                 | assignment'''
     # Evitiamo lo statementNode
     p[0] = p[1]
 
@@ -62,6 +63,13 @@ def p_sync(p):
 
 # NEW(Starting to introduce the function definition)
 # TODO: function_declaration to be checked
+
+def p_assignment(p):
+    '''assignment : ID EQUAL expression'''
+    id_node = Node("TermNode", leaf=p[1])
+    p[0] = Node("AssignmentNode", children=[id_node, p[3]])
+
+
 def p_function_declaration(p):
     '''function_declaration : FUN ID LPAREN parameter_list RPAREN COLONS type LBRACE statement_list RBRACE
                             | FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
@@ -139,7 +147,7 @@ def p_if_statement(p):
     elif len(p) == 10 and isinstance(p[6], Node):
         p[0] = Node("If-else-StatementNode", children=[p[3], Node("EmptyNode", leaf=" "), Node("EmptyNode", leaf=" ")])
     else:
-        p[0] = Node("IfStatementNode", children=[p[3]])
+        p[0] = Node("IfStatementNode", children=[p[3], Node("EmptyNode", leaf=" ")])
 
 
 # NEW(Starting to introduce the while statement)
@@ -204,6 +212,8 @@ def p_expression(p):
                   | expression GREATER_THAN_EQUAL expression
                   | expression LESS_THAN_EQUAL expression
                   | LPAREN expression RPAREN '''
+
+    # 3+2
     if len(p) == 2:
         p[0] = p[1]  # Se passo da term ad expression non creo un expressionNode ma lo creo solo alla fine
     elif len(p) == 4 and p[1] == "(":
