@@ -10,3 +10,4 @@ def get_type(x):
         return "Int"
     elif (type(x)) == "<class 'bool'>":
         return "Boolean"
+

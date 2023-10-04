@@ -51,7 +51,8 @@ def p_statement(p):
                  | if_statement
                  | while_statement
                  | output_statement
-                 | assignment'''
+                 | assignment
+                 | return_statement'''
     # Evitiamo lo statementNode
     p[0] = p[1]
 
@@ -63,7 +64,12 @@ def p_sync(p):
 
 # NEW(Starting to introduce the function definition)
 # TODO: function_declaration to be checked
+def p_return_statement(p):
+    '''return_statement : RETURN expression'''
+    p[0] = Node("ReturnNode", children=[p[2]])
 
+
+# return var prova String = prova(x,y)
 def p_assignment(p):
     '''assignment : ID EQUAL expression'''
     id_node = Node("TermNode", leaf=p[1])
@@ -71,24 +77,25 @@ def p_assignment(p):
 
 
 def p_function_declaration(p):
-    '''function_declaration : FUN ID LPAREN parameter_list RPAREN COLONS type LBRACE statement_list RBRACE
-                            | FUN ID LPAREN parameter_list RPAREN LBRACE statement_list RBRACE
-                            | FUN ID LPAREN parameter_list RPAREN LBRACE RBRACE'''
+    '''function_declaration : FUN ID LPAREN parameter_list_declaration RPAREN COLONS type LBRACE statement_list RBRACE
+                            | FUN ID LPAREN parameter_list_declaration RPAREN LBRACE statement_list RBRACE
+                            | FUN ID LPAREN parameter_list_declaration RPAREN LBRACE RBRACE'''
     id_node = Node("TermNode", leaf=p[2])
     if len(p) == 10:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7], p[9]])
     elif len(p) == 9:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7]])
     else:
-        p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4]])
+        p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], Node("EmptyNode", leaf=" ")])
 
 
 def p_function_calling(p):
-    '''function_calling : ID LPAREN parameter_list RPAREN
-                        | VAL ID COLONS type EQUAL ID LPAREN parameter_list RPAREN
-                        | VAR ID COLONS type EQUAL ID LPAREN parameter_list RPAREN
-                        | VAL ID EQUAL ID LPAREN parameter_list RPAREN
-                        | VAR ID EQUAL ID LPAREN parameter_list RPAREN'''
+    '''function_calling : ID LPAREN parameter_list_calling RPAREN
+                        | VAL ID COLONS type EQUAL ID LPAREN parameter_list_calling RPAREN
+                        | VAR ID COLONS type EQUAL ID LPAREN parameter_list_calling RPAREN
+                        | VAL ID EQUAL ID LPAREN parameter_list_calling RPAREN
+                        | VAR ID EQUAL ID LPAREN parameter_list_calling RPAREN
+                        | ID EQUAL ID LPAREN parameter_list_calling RPAREN'''
     if len(p) == 5:
         id_node = Node("TermNode", leaf=p[1])
         p[0] = Node("FunctionCallingNode", children=[id_node, p[3]])
@@ -97,6 +104,11 @@ def p_function_calling(p):
         fun_id_node = Node("TermNode", leaf=p[6])
         function_calling_node = Node("FunctionCallingNode", children=[fun_id_node, p[8]])
         p[0] = Node("VariableDeclarationNode", children=[var_id_node, p[4], p[7], function_calling_node], leaf=p[1])
+    elif len(p) == 7:
+        var_id_node = Node("TermNode", leaf=p[1])
+        fun_id_node = Node("TermNode", leaf=p[3])
+        function_calling_node = Node("FunctionCallingNode", children=[fun_id_node, p[5]])
+        p[0] = Node("AssignmentNode", children=[var_id_node, function_calling_node])
     else:
         var_id_node = Node("TermNode", leaf=p[2])
         fun_id_node = Node("TermNode", leaf=p[4])
@@ -104,25 +116,40 @@ def p_function_calling(p):
         p[0] = Node("VariableDeclarationNode", children=[var_id_node, function_calling_node], leaf=p[1])
 
 
-def p_parameter_list(p):
-    '''parameter_list : parameter
-                     | parameter_list COMMA parameter'''
+def p_parameter_list_calling(p):
+    '''parameter_list_calling : parameter_calling
+                              | parameter_list_calling COMMA parameter_calling'''
     if len(p) == 2:
-        p[0] = Node("ParameterList", children=[p[1]])
+        p[0] = Node("ParameterListCalling", children=[p[1]])
     else:
         p[1].add_child(p[3])
         p[0] = p[1]
 
 
-def p_parameter(p):
-    '''parameter : ID COLONS type
-                 | ID'''
+def p_parameter_list_declaration(p):
+    '''parameter_list_declaration : parameter_declaration
+                                  | parameter_list_declaration COMMA parameter_declaration'''
+    if len(p) == 2:
+        p[0] = Node("ParameterListDeclaration", children=[p[1]])
+    else:
+        p[1].add_child(p[3])
+        p[0] = p[1]
+
+
+# def fun(x:String,y:Prova)
+# fun(x,y)
+
+def p_parameter_calling(p):
+    '''parameter_calling : term'''
+    # Nel caso in cui siano una lista di id,semplicemente ritornare il termNode
+    p[0] = p[1]
+
+
+def p_parameter_declaration(p):
+    '''parameter_declaration : ID COLONS type'''
     # Nel caso in cui siano una lista di id,semplicemente ritornare il termNode
     id_node = Node("TermNode", leaf=p[1])
-    if len(p) == 4:
-        p[0] = Node("ParameterNode", children=[id_node, p[3]])
-    else:
-        p[0] = id_node
+    p[0] = Node("ParameterDeclarationNode", children=[id_node, p[3]])
 
 
 # NEW(Starting to introduce the if else statement)

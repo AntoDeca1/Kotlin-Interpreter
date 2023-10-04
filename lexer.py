@@ -44,7 +44,8 @@ reserved = {
     'false': 'FALSE',
     'var': 'VAR',
     'val': 'VAL',
-    'readLine': 'READLINE'
+    'readLine': 'READLINE',
+    'return': 'RETURN'
 }
 
 tokens = non_reserved + list(reserved.values())
@@ -97,7 +98,7 @@ def t_INTEGER_LITERAL(t):
     return t
 
 
-def t_STRING_LITERAL\
+def t_STRING_LITERAL \
                 (t):
     r'\"[^\"]*\"'
     t.value = t.value[1:-1]

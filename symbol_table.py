@@ -52,3 +52,22 @@ class SymbolTable:
                 found = True
         if found == False:
             raise Exception(f"Variabile {name} non dichiarata")
+
+
+class FunctionTable(SymbolTable):
+    def __init__(self):
+        super().__init__()
+
+    def register_function(self, name, parameter_list, statament_list, output_type=None):
+        """
+        We add a variable to our symbol table
+        :param name: Variable name
+        :param type: Variable type
+        :param value: Value of the variable
+        :param symbol_tables: List of dictionaries(We access the one on the top)
+        :return:
+        """
+        current_symbol_table = self.symbol_tables[-1]
+        if name in current_symbol_table:
+            raise Exception(f"Variabile {name} già dichiarata nello scope corrente")
+        current_symbol_table[name] = (parameter_list, statament_list, output_type)
