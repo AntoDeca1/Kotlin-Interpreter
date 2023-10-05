@@ -10,7 +10,8 @@ class Visitor:
 
     def visit(self, node):
         if node.node_type == "ProgramNode":
-            return self.visit(node.children[0])
+            result = self.visit(node.children[0])
+            return result
         elif node.node_type == "StatementList":
             for children in node.children:
                 result = self.visit(children)
@@ -22,13 +23,12 @@ class Visitor:
                 id = self.visit(node.children[0])
                 type = self.visit(node.children[1])
                 expression = self.visit(node.children[2])
-                self.s_t.register_variable(id, type, expression)
+                self.s_t.register_variable(id, type, expression, node.leaf)
             else:
                 id = self.visit(node.children[0])
                 expression = self.visit(node.children[1])
                 type = get_type(expression)
-                self.s_t.register_variable(id, type, expression)
-                print(self.s_t.symbol_tables)
+                self.s_t.register_variable(id, type, expression, node.leaf)
         elif node.node_type == "WhileStatementNode":
             self.s_t.enter_scope()
             while self.visit(node.children[0]):
@@ -55,7 +55,6 @@ class Visitor:
                 self.s_t.exit_scope()
                 return statement_list
         elif node.node_type == "AssignmentNode":
-            # TODO:Controllo dei tipi
             id = self.visit(node.children[0])
             value = self.visit(node.children[1])
             type = get_type(value)
@@ -85,17 +84,22 @@ class Visitor:
             parameter_list, statament_list, output_type = self.f_t.find_variable(function_name)
             correct_types = [parameter[1] for parameter in parameter_list]
             if input_types == correct_types:
-                # TODO:Gestire il return e l'output type
+                self.s_t.enter_scope()
+                for parameter_input, parameter_declared in zip(parameter_list, input_parameters):
+                    name, type = parameter_input
+                    self.s_t.register_variable(name, type, parameter_declared, 'val')
                 result = self.visit(statament_list)
                 result_type = get_type(result)
                 if result_type != output_type:
                     raise Exception("Type Mismatch")
                 else:
+                    self.s_t.exit_scope()
                     return result
             else:
                 raise Exception(f"Parameters Mismatch")
 
         elif node.node_type == "ReturnNode":
+            # TODO: Da compattare nella pulizia del codice
             if node.children[0].node_type == "TermNode":
                 result = self.check_if_st(node.children[0])
                 return result
@@ -120,6 +124,13 @@ class Visitor:
                 temp_parameter = self.visit(children)
                 parameters.append(temp_parameter)
             return parameters
+        elif node.node_type == "PrintStatementNode":
+            if node.children[0].node_type == "TermNode":
+                result = self.check_if_st(node.children[0])
+                print(result)
+            else:
+                print(self.visit(node.children[0]))
+            return
         elif node.node_type == "TermNode":
             return node.leaf
         elif node.node_type == "EmptyNode":
@@ -129,7 +140,6 @@ class Visitor:
         elif node.node_type == "BinaryExpressionNode":
             return self.binary_expression(node)
         elif node.node_type == "UnaryExpressionNode":
-            # TODO:Controllo su un tipo
             operator = node.children[0]
             return not (operator)
         elif node.node_type == "TypeNode":
@@ -139,10 +149,11 @@ class Visitor:
 
     def binary_expression(self, node):
         # TODO:Controllo degli errori di tipo
-        print("Entro")
         first_operator = self.check_if_st(node.children[0])
         second_operator = self.check_if_st(node.children[1])
         if node.leaf == "+":
+            if get_type(first_operator) == "String":
+                return string_concatenation(first_operator, second_operator)
             return first_operator + second_operator
         elif node.leaf == "-":
             return first_operator - second_operator
@@ -171,15 +182,14 @@ class Visitor:
         if node.node_type == "TermNode":
             id = self.visit(node)
             return self.s_t.find_variable(id)[1]
-            # TODO:Qua sta anche il type nella symbol table
         else:
             return self.visit(node)
 
-# TODO:Non posso nella stessa symbol table avere due variabili con lo stesso nome dichiarate
+# TODO:Controllare nelle espressioni che ci siano tipi compatibili per le operazioni
 # TODO:Controllare che ci sia sempre un main
-# TODO: Fare un symbol tables per funzioni
-# TODO: Entrare anche nello scope delle funzioni
-# TODO :Controllo valore in output della funzione
-# TODO : Return Keyword
-# TODO: Return con function_calling gestire che l'output della funzione sia effettivamente quello che ritorniamo
+
+
+# TODO:Inline Function (opzionale)
+
+
 # TODO :Rendere metodi privati

@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from lexer import tokens
+from lexer import *
 from Node import *
 from utilities import *
 
@@ -17,11 +17,6 @@ precedence = (
     ('left', 'TIMES', 'DIVIDE'),
     ('right', 'LOGICAL_NOT', 'UMINUS')
 )
-
-
-def p_empty(p):
-    'empty :'
-    pass
 
 
 def p_expr_uminus(p):
@@ -50,9 +45,9 @@ def p_statement(p):
                  | function_calling
                  | if_statement
                  | while_statement
-                 | output_statement
                  | assignment
-                 | return_statement'''
+                 | return_statement
+                 | print_statement'''
     # Evitiamo lo statementNode
     p[0] = p[1]
 
@@ -63,7 +58,6 @@ def p_sync(p):
 
 
 # NEW(Starting to introduce the function definition)
-# TODO: function_declaration to be checked
 def p_return_statement(p):
     '''return_statement : RETURN expression'''
     p[0] = Node("ReturnNode", children=[p[2]])
@@ -81,7 +75,7 @@ def p_function_declaration(p):
                             | FUN ID LPAREN parameter_list_declaration RPAREN LBRACE statement_list RBRACE
                             | FUN ID LPAREN parameter_list_declaration RPAREN LBRACE RBRACE'''
     id_node = Node("TermNode", leaf=p[2])
-    if len(p) == 10:
+    if len(p) == 11:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7], p[9]])
     elif len(p) == 9:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7]])
@@ -136,9 +130,6 @@ def p_parameter_list_declaration(p):
         p[0] = p[1]
 
 
-# def fun(x:String,y:Prova)
-# fun(x,y)
-
 def p_parameter_calling(p):
     '''parameter_calling : term'''
     # Nel caso in cui siano una lista di id,semplicemente ritornare il termNode
@@ -160,9 +151,6 @@ def p_if_statement(p):
                     | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE RBRACE
                     | IF LPAREN expression RPAREN LBRACE RBRACE ELSE LBRACE RBRACE
                     | IF LPAREN expression RPAREN LBRACE RBRACE'''
-
-    # Introdotta la possibilità di avere anche if e else vuoti
-    # TODO:Vedere se è meglio non mettere nulla quando non ci sono statement oppure creare un EmptyNode??(Per adesso non metto nulla)
     if len(p) == 8:
         p[0] = Node("IfStatementNode", children=[p[3], p[6]])
     elif len(p) == 12:
@@ -189,30 +177,15 @@ def p_while_statement(p):
         p[0] = Node("WhileStatementNode", children=[p[3], Node("EmptyNode", leaf=" ")])
 
 
-# NEW(Starting to introduce the input statement)
-# def p_input_statement(p):
-#     '''input_statement : READLINE LPAREN expression'''
-#     pass
-
-
-# NEW(Starting to introduce the output statement)
-def p_output_statement(p):
-    '''output_statement : PRINT LPAREN expression RPAREN'''
-    p[0] = ("print", p[3])
-
-
 def p_variable_declaration(p):
     '''variable_declaration : VAL ID COLONS type EQUAL expression
                             | VAR ID COLONS type EQUAL expression
                             | VAL ID EQUAL expression
                             | VAR ID EQUAL expression  '''
-    # TODO:Da controllare come idea, per evitare di creare un altra classe salvare in leaf var/val
-    # TODO:Qui ID non ha un nodo perchè non diventa mai term
     id_Node = Node("TermNode", leaf=p[2])
     if len(p) == 7:
         p[0] = Node("VariableDeclarationNode", children=[id_Node, p[4], p[6]], leaf=p[1])
     else:
-        # TODO:Non posso inferire il tipo da qui,vedere se serve o se possiamo farlo in fase di discesa
         p[0] = Node("VariableDeclarationNode", children=[id_Node, p[4]], leaf=p[1])
 
 
@@ -253,6 +226,11 @@ def p_expression(p):
         p[0] = Node("ExpressionNode", children=[operator], leaf="=")
 
 
+def p_print(p):
+    '''print_statement : PRINT LPAREN expression RPAREN'''
+    p[0] = Node("PrintStatementNode", children=[p[3]])
+
+
 def p_term(p):
     '''term : Literal
             | ID'''
@@ -272,19 +250,12 @@ def p_literal(p):
 
 # PANIC MODE
 def p_error(p):
-    print("Errore Sintattico Attenzione")
-    if not p:
-        print("End of File!")
-        return
-
-        # Read ahead looking for a closing '}'
+    print("Errore di parsing")
     while True:
-        tok = parser.token()  # Get the next token
-        if not tok or tok.type == 'NEWLINE':
+        tok = parser.token()
+        if not tok or tok.type in ('FUN', 'IF', 'WHILE', 'VAR', 'VAL'):
             break
-    parser.restart()
-
-    # Build the parser
+    parser.restart(tok)
 
 
 parser = yacc.yacc()

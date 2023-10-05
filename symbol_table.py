@@ -1,3 +1,6 @@
+from utilities import *
+
+
 class SymbolTable:
     def __init__(self):
         self.symbol_tables = [{}]
@@ -18,7 +21,7 @@ class SymbolTable:
         """
         self.symbol_tables.pop()
 
-    def register_variable(self, name, type, value):
+    def register_variable(self, name, type, value, is_Var):
         """
         We add a variable to our symbol table
         :param name: Variable name
@@ -30,7 +33,7 @@ class SymbolTable:
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
             raise Exception(f"Variabile {name} già dichiarata nello scope corrente")
-        current_symbol_table[name] = (type, value)
+        current_symbol_table[name] = (type, value, is_Var)
 
     def find_variable(self, name):
         """
@@ -48,8 +51,12 @@ class SymbolTable:
         found = False
         for symbol_table in reversed(self.symbol_tables):
             if name in symbol_table:
-                symbol_table[name] = (type, new_value)
-                found = True
+                _, _, variable_type = symbol_table[name]
+                if is_changeable(variable_type):
+                    symbol_table[name] = (type, new_value, variable_type)
+                    found = True
+                else:
+                    raise Exception("Val variables are not modifiable")
         if found == False:
             raise Exception(f"Variabile {name} non dichiarata")
 

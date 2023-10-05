@@ -6,7 +6,6 @@ non_reserved = [
     'EMPTY',
     'PLUS',
     'MINUS',
-    'WHITE',
     'TIMES',
     'DIVIDE',
     'COMMA',
@@ -49,7 +48,6 @@ reserved = {
 }
 
 tokens = non_reserved + list(reserved.values())
-# TODO: Gestire la questione dello scope
 t_ignore = ' \t'
 
 # Regular expression rules for simple tokens
@@ -76,7 +74,7 @@ t_LOGICAL_NOT = r'\!'
 
 
 # Define a rule so we can track line numbers
-def t_newline(t):
+def t_NEWLINE(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
@@ -85,11 +83,6 @@ def t_newline(t):
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
-
-
-def t_white(t):
-    'r\s+'
-    pass
 
 
 def t_INTEGER_LITERAL(t):
@@ -113,8 +106,9 @@ def t_ID(t):
 
 
 lexer = lex.lex()
-# input_sentence = '''val x= 10
-# while(x>5){x=x-3}'''
+# input_sentence = '''var y:"String"="Prova"
+# val x=5
+# var y:String="Prova"'''
 #
 # lexer.input(input_sentence)
 #
