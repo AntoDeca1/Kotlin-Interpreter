@@ -60,6 +60,15 @@ class SymbolTable:
         if found == False:
             raise Exception(f"Variabile {name} non dichiarata")
 
+    def local_modify_variable(self, name, new_value, type):
+        found = False
+        last_symbol_table = self.symbol_tables[-1]
+        if name in last_symbol_table:
+            last_symbol_table[name] = (type, new_value, 'Var')
+            found = True
+        if found == False:
+            raise Exception(f"Variabile {name} non dichiarata")
+
 
 class FunctionTable(SymbolTable):
     def __init__(self):

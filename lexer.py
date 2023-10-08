@@ -8,10 +8,10 @@ non_reserved = [
     'MINUS',
     'TIMES',
     'DIVIDE',
+    'NEWLINE',
     'COMMA',
     'EQUAL',
     'NOT_EQUAL',
-    'NEWLINE',
     'LESS_THAN',
     'GREATER_THAN',
     'LESS_THAN_EQUAL',
@@ -24,9 +24,11 @@ non_reserved = [
     'LPAREN',
     'LBRACE',
     'RBRACE',
-    'COLONS',  #:
+    'COLONS',
+    'SEMICOLON',
     'STRING_LITERAL',
     'INTEGER_LITERAL',
+    'RANGE'
 ]
 
 # Define reserved words
@@ -35,6 +37,7 @@ reserved = {
     'else': 'ELSE',
     'fun': 'FUN',
     'while': 'WHILE',
+    'for': 'FOR',
     'Int': 'INT',
     'Boolean': 'BOOLEAN',
     'String': 'STRING',
@@ -44,7 +47,9 @@ reserved = {
     'var': 'VAR',
     'val': 'VAL',
     'readLine': 'READLINE',
-    'return': 'RETURN'
+    'return': 'RETURN',
+    'step': 'STEP',
+    'in': 'IN'
 }
 
 tokens = non_reserved + list(reserved.values())
@@ -61,6 +66,7 @@ t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_COLONS = r'\:'
+t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
 t_GREATER_THAN_EQUAL = r'\>='
 t_LESS_THAN_EQUAL = r'\<='
@@ -71,6 +77,10 @@ t_LOGICAL_EQUAL = r'\=\='
 t_LOGICAL_OR = r'\|\|'
 t_LOGICAL_AND = r'\&&'
 t_LOGICAL_NOT = r'\!'
+t_RANGE = r'\..'
+
+
+# Regole per il token EOF
 
 
 # Define a rule so we can track line numbers
@@ -106,15 +116,19 @@ def t_ID(t):
 
 
 lexer = lex.lex()
-# input_sentence = '''var y:"String"="Prova"
-# val x=5
-# var y:String="Prova"'''
-#
-# lexer.input(input_sentence)
-#
-# # Step 3: Iterate over the tokens
-# while True:
-#     token = lexer.token()
-#     if not token:
-#         break  # No more tokens
-#     print(token)
+input_sentence = '''
+                    fun main(){
+                     for(i in 1..5 step 2){
+                     print(i)
+                     }
+                    }
+                    '''
+
+lexer.input(input_sentence)
+
+# Step 3: Iterate over the tokens
+while True:
+    token = lexer.token()
+    if not token:
+        break  # No more tokens
+    print(token)
