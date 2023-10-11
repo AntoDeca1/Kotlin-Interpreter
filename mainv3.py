@@ -3,11 +3,13 @@ from lexer import lexer
 from visit import Visitor
 from symbol_table import *
 
-# Step 2: Tokenize the Input Sentence
-input_sentence = '''
-                    val x=5
-                    fun main(){}
-                    '''
+# input_sentence = '''
+#                     fun main() {
+#                         val x :Int="Prova"
+#                     }
+#                     '''
+with open('test_scripts/test_5.kt', 'r') as file:
+    input_sentence = file.read()
 
 # Questo dovrebbe essere un errore perchè non ho specificato l'output,allora perchè va bene
 lexer.input(input_sentence)

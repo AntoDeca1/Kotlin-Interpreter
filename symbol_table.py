@@ -1,4 +1,5 @@
 from utilities import *
+from exceptions import *
 
 
 class SymbolTable:
@@ -32,7 +33,7 @@ class SymbolTable:
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise Exception(f"Variabile {name} già dichiarata nello scope corrente")
+            raise VariableAlreadyDeclared(f"Variabile {name} già dichiarata nello scope corrente")
         current_symbol_table[name] = (type, value, is_Var)
 
     def find_variable(self, name):
@@ -45,7 +46,7 @@ class SymbolTable:
         for symbol_table in reversed(self.symbol_tables):
             if name in symbol_table:
                 return symbol_table[name]
-        raise Exception(f"Variabile {name} non dichiarata")
+        raise VariableNotDeclared(f"Variable {name} not declared")
 
     def modify_variable(self, name, new_value, type):
         found = False
@@ -56,9 +57,9 @@ class SymbolTable:
                     symbol_table[name] = (type, new_value, variable_type)
                     found = True
                 else:
-                    raise Exception("Val variables are not modifiable")
+                    raise VariableNotModifiable("Val variables are not modifiable")
         if found == False:
-            raise Exception(f"Variabile {name} non dichiarata")
+            raise VariableNotDeclared(f"Variabile {name} non dichiarata")
 
     def local_modify_variable(self, name, new_value, type):
         found = False
@@ -67,7 +68,7 @@ class SymbolTable:
             last_symbol_table[name] = (type, new_value, 'Var')
             found = True
         if found == False:
-            raise Exception(f"Variabile {name} non dichiarata")
+            raise VariableNotDeclared(f"Variabile {name} non dichiarata")
 
 
 class FunctionTable(SymbolTable):
@@ -85,5 +86,5 @@ class FunctionTable(SymbolTable):
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise Exception(f"Variabile {name} già dichiarata nello scope corrente")
+            raise VariableAlreadyDeclared(f"Funciton {name} already declared in the current scope")
         current_symbol_table[name] = (parameter_list, statament_list, output_type)
