@@ -13,6 +13,16 @@ class VariableNotDeclared(Exception):
         super().__init__(messaggio)
 
 
+class VariableAlreadyDeclared(Exception):
+    def __init__(self, messaggio):
+        super().__init__(messaggio)
+
+
+class VariableNotModifiable(Exception):
+    def __init__(self, messaggio):
+        super().__init__(messaggio)
+
+
 class MainException(Exception):
     def __init__(self, messaggio):
         super().__init__(messaggio)

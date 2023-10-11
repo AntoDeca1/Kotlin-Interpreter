@@ -245,7 +245,8 @@ def p_print(p):
 def p_term(p):
     '''term : Literal
             | ID
-            | function_calling'''
+            | function_calling
+            | readline'''
     if isinstance(p[1], Node):
         p[0] = p[1]
     else:
@@ -263,6 +264,11 @@ def p_literal(p):
 def p_semis(p):
     '''semis : SEMICOLON
              | empty'''
+
+
+def p_readline(p):
+    '''readline : READLINE LPAREN RPAREN'''
+    p[0] = Node("ReadlineNode")
 
 
 # PANIC MODE

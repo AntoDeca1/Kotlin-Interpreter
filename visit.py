@@ -13,93 +13,103 @@ class Visitor:
         self.f_t = f_t
 
     def visit(self, node):
-        if node.node_type == "ProgramNode":
-            result = self.visit(node.children[0])
-            self.visit(self.check_if_main())
-            return result
-        elif node.node_type == "StatementList":
-            for children in node.children:
-                result = self.visit(children)
-                if result is not None:
-                    return result
-            return
-        elif node.node_type == "VariableDeclarationNode":
-            if len(node.children) == 3:
+        try:
+            if node.node_type == "ProgramNode":
+                result = self.visit(node.children[0])
+                self.visit(self.check_if_main())
+                return result
+            elif node.node_type == "StatementList":
+                for children in node.children:
+                    result = self.visit(children)
+                    if result is not None:
+                        return result
+                return
+            elif node.node_type == "VariableDeclarationNode":
+                if len(node.children) == 3:
+                    id = self.visit(node.children[0])
+                    type = self.visit(node.children[1])
+                    expression = self.visit(node.children[2])
+                    if type != get_type(expression):
+                        raise TypeMismatch(f"Inferred type is {get_type(expression)} but {type} was expected")
+                    self.s_t.register_variable(id, type, expression, node.leaf)
+                else:
+                    id = self.visit(node.children[0])
+                    expression = self.visit(node.children[1])
+                    type = get_type(expression)
+                    self.s_t.register_variable(id, type, expression, node.leaf)
+            elif node.node_type == "WhileStatementNode":
+                self.s_t.enter_scope()
+                while self.visit(node.children[0]):
+                    self.visit(node.children[1])
+                self.s_t.exit_scope()
+                return
+            elif node.node_type == "ForStatement":
+                self.s_t.enter_scope()
+                id, range_list, step = self.visit(node.children[0])
+                self.s_t.register_variable(id, 'Int', range_list[0], 'var')
+                for i in range_list:
+                    self.visit(node.children[1])
+                    self.s_t.local_modify_variable(id, i + step, 'Int')
+                self.s_t.exit_scope()
+            elif node.node_type == "If-else-StatementNode":
+                condition = self.visit(node.children[0])
+                if get_type(condition) != "Boolean":
+                    raise TypeMismatch("The integer literal does not conform to the expected type Boolean")
+                if condition:
+                    self.s_t.enter_scope()
+                    statement_list = self.visit(node.children[1])
+                    self.s_t.exit_scope()
+                    return statement_list
+                else:
+                    self.s_t.enter_scope()
+                    statement_list = self.visit(node.children[2])
+                    self.s_t.exit_scope()
+                    return statement_list
+            elif node.node_type == "IfStatementNode":
+                condition = self.visit(node.children[0])
+                if get_type(condition) != "Boolean":
+                    raise TypeMismatch("The integer literal does not conform to the expected type Boolean")
+                if condition:
+                    self.s_t.enter_scope()
+                    statement_list = self.visit(node.children[1])
+                    self.s_t.exit_scope()
+                    return statement_list
+            elif node.node_type == "AssignmentNode":
                 id = self.visit(node.children[0])
-                type = self.visit(node.children[1])
-                expression = self.visit(node.children[2])
-                self.s_t.register_variable(id, type, expression, node.leaf)
-            else:
-                id = self.visit(node.children[0])
-                expression = self.visit(node.children[1])
-                type = get_type(expression)
-                self.s_t.register_variable(id, type, expression, node.leaf)
-        elif node.node_type == "WhileStatementNode":
-            self.s_t.enter_scope()
-            while self.visit(node.children[0]):
-                self.visit(node.children[1])
-            self.s_t.exit_scope()
-            return
-        elif node.node_type == "ForStatement":
-            self.s_t.enter_scope()
-            id, range_list, step = self.visit(node.children[0])
-            self.s_t.register_variable(id, 'Int', range_list[0], 'var')
-            for i in range_list:
-                self.visit(node.children[1])
-                self.s_t.local_modify_variable(id, i + step, 'Int')
-            self.s_t.exit_scope()
-        elif node.node_type == "If-else-StatementNode":
-            condition = self.visit(node.children[0])
-            if condition:
-                self.s_t.enter_scope()
-                statement_list = self.visit(node.children[1])
-                self.s_t.exit_scope()
-                return statement_list
-            else:
-                self.s_t.enter_scope()
-                statement_list = self.visit(node.children[2])
-                self.s_t.exit_scope()
-                return statement_list
-        elif node.node_type == "IfStatementNode":
-            condition = self.visit(node.children[0])
-            if condition:
-                self.s_t.enter_scope()
-                statement_list = self.visit(node.children[1])
-                self.s_t.exit_scope()
-                return statement_list
-        elif node.node_type == "AssignmentNode":
-            id = self.visit(node.children[0])
-            value = self.visit(node.children[1])
-            type = get_type(value)
-            variable_type = self.s_t.find_variable(id)[0]
-            if variable_type == type:
-                self.s_t.modify_variable(id, value, type)
-            else:
-                raise Exception("Type Mismatch")
-            return
-        elif node.node_type == "FunctionDeclarationNode":
-            if len(node.children) == 4:
-                function_name = self.visit(node.children[0])
-                parameter_list = self.visit(node.children[1])
-                output_type = self.visit(node.children[2])
-                stataments_list = node.children[3]
-                self.f_t.register_function(function_name, parameter_list, stataments_list, output_type)
-            else:
-                function_name = self.visit(node.children[0])
-                parameter_list = self.visit(node.children[1])
-                stataments_list = node.children[2]
-                self.f_t.register_function(function_name, parameter_list, stataments_list)
-            return
-        elif node.node_type == "FunctionCallingNode":
-            try:
+                value = self.visit(node.children[1])
+                type = get_type(value)
+                variable_type = self.s_t.find_variable(id)[0]
+                if variable_type == type:
+                    self.s_t.modify_variable(id, value, type)
+                else:
+                    raise TypeMismatch(f"Inferred type is {type} but {variable_type} was expected")
+                return
+            elif node.node_type == "FunctionDeclarationNode":
+                if len(node.children) == 4:
+                    function_name = self.visit(node.children[0])
+                    parameter_list = self.visit(node.children[1])
+                    output_type = self.visit(node.children[2])
+                    stataments_list = node.children[3]
+                    self.f_t.register_function(function_name, parameter_list, stataments_list, output_type)
+                else:
+                    function_name = self.visit(node.children[0])
+                    parameter_list = self.visit(node.children[1])
+                    stataments_list = node.children[2]
+                    self.f_t.register_function(function_name, parameter_list, stataments_list)
+                return
+            elif node.node_type == "FunctionCallingNode":
                 function_name = self.visit(node.children[0])
                 input_parameters = self.visit(node.children[1])
                 parameter_list, statament_list, output_type = self.f_t.find_variable(function_name)
-                if parameter_list is None and parameter_list is None:
+                if parameter_list is None and input_parameters is None:
                     self.s_t.enter_scope()
                     result = self.visit(statament_list)
                     self.s_t.exit_scope()
                     return result
+                elif parameter_list is None and input_parameters is not None:
+                    raise ParamatersMismatch(f"Too many arguments for local fun {function_name}")
+                elif parameter_list is not None and input_parameters is None:
+                    raise ParamatersMismatch(f"No value passed for parameters {parameter_list}")
                 input_types = [get_type(parameter) for parameter in input_parameters]
                 correct_types = [parameter[1] for parameter in parameter_list]
                 if input_types == correct_types:
@@ -117,57 +127,73 @@ class Visitor:
                         self.s_t.exit_scope()
                         return result
                 else:
-                    raise ParamatersMismatch(f"Parameters Mismatch").with_traceback(None) from None
-            except Exception as e:
-                raise e
-        elif node.node_type == "RangeOperator":
-            id = self.visit(node.children[0])
-            term_from = node.children[1]
-            term_to = node.children[2]
-            step = 1
-            term_from = self.check_if_st(term_from)
-            term_to = self.check_if_st(term_to)
-            if len(node.children) == 4:
-                step = node.children[3]
-                step = self.check_if_st(step)
-            range_list = list(range(term_from, term_to + 1, step))
-            return (id, range_list, step)
-        elif node.node_type == "ReturnNode":
-            return self.check_if_st(node.children[0])
-        elif node.node_type == "ParameterDeclarationNode":
-            parameter_name = self.visit(node.children[0])
-            parameter_type = self.visit(node.children[1])
-            return (parameter_name, parameter_type)
-        elif node.node_type == "ParameterListCalling":
-            parameters = []
-            for children in node.children:
-                temp_parameter = self.check_if_st(children)
-                parameters.append(temp_parameter)
-            return parameters
-        elif node.node_type == "ParameterListDeclaration":
-            parameters = []
-            for children in node.children:
-                temp_parameter = self.visit(children)
-                parameters.append(temp_parameter)
-            return parameters
-        elif node.node_type == "PrintStatementNode":
-            print(self.check_if_st(node.children[0]))
-            return
-        elif node.node_type == "TermNode":
-            return node.leaf
-        elif node.node_type == "EmptyNode":
-            return
-        elif node.node_type == "ExpressionNode":
-            return self.visit(node.children[0])
-        elif node.node_type == "BinaryExpressionNode":
-            return self.binary_expression(node)
-        elif node.node_type == "UnaryExpressionNode":
-            operator = node.children[0]
-            return not (operator)
-        elif node.node_type == "TypeNode":
-            return node.leaf
-        elif node.node_type == "LiteralNode":
-            return node.leaf
+                    raise ParamatersMismatch(f"Parameters Mismatch in fun {function_name}").with_traceback(
+                        None) from None
+            elif node.node_type == "RangeOperator":
+                id = self.visit(node.children[0])
+                term_from = node.children[1]
+                term_to = node.children[2]
+                step = 1
+                term_from = self.check_if_st(term_from)
+                term_to = self.check_if_st(term_to)
+                if len(node.children) == 4:
+                    step = node.children[3]
+                    step = self.check_if_st(step)
+                range_list = list(range(term_from, term_to + 1, step))
+                return (id, range_list, step)
+            elif node.node_type == "ReturnNode":
+                return self.check_if_st(node.children[0])
+            elif node.node_type == "ParameterDeclarationNode":
+                parameter_name = self.visit(node.children[0])
+                parameter_type = self.visit(node.children[1])
+                return (parameter_name, parameter_type)
+            elif node.node_type == "ParameterListCalling":
+                parameters = []
+                for children in node.children:
+                    temp_parameter = self.check_if_st(children)
+                    parameters.append(temp_parameter)
+                return parameters
+            elif node.node_type == "ParameterListDeclaration":
+                parameters = []
+                for children in node.children:
+                    temp_parameter = self.visit(children)
+                    parameters.append(temp_parameter)
+                return parameters
+            elif node.node_type == "PrintStatementNode":
+                print(self.check_if_st(node.children[0]))
+                return
+            elif node.node_type == "ReadlineNode":
+                result = input()
+                return result
+            elif node.node_type == "TermNode":
+                return node.leaf
+            elif node.node_type == "EmptyNode":
+                return
+            elif node.node_type == "ExpressionNode":
+                return self.visit(node.children[0])
+            elif node.node_type == "BinaryExpressionNode":
+                return self.binary_expression(node)
+            elif node.node_type == "UnaryExpressionNode":
+                operator = node.children[0]
+                return not (operator)
+            elif node.node_type == "TypeNode":
+                return node.leaf
+            elif node.node_type == "LiteralNode":
+                return node.leaf
+        except TypeMismatch as e:
+            print(f"Exception: {e}")
+        except ParamatersMismatch as e:
+            print(f"Exception: {e}")
+        except VariableNotDeclared as e:
+            print(f"Exception: {e}")
+        except VariableAlreadyDeclared as e:
+            print(f"Exception: {e}")
+        except MainException as e:
+            print(f"Exception: {e}")
+        except VariableNotModifiable as e:
+            print(f"Exception: {e}")
+        except Exception as e:
+            print(f"Exception: {e}")
 
     def binary_expression(self, node):
         first_operator = self.check_if_st(node.children[0])
@@ -200,7 +226,7 @@ class Visitor:
             elif node.leaf == "!=":
                 return first_operator != second_operator
         except Exception as e:
-            raise TypeMismatch(f"Operands Mismatch").with_traceback(None) from None
+            raise TypeMismatch(f"{e}").with_traceback(None) from None
 
     def check_if_main(self):
         try:

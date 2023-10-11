@@ -8,7 +8,7 @@ def get_type(x):
         return "String"
     elif str(type(x)) == "<class 'int'>":
         return "Int"
-    elif (type(x)) == "<class 'bool'>":
+    elif str(type(x)) == "<class 'bool'>":
         return "Boolean"
 
 
