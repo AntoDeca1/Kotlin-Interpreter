@@ -1,5 +1,11 @@
 class Node:
     def __init__(self, type, children=None, leaf=None):
+        """
+        Generic node of the AST
+        :param type: Type of the node (e.g. 'ExpressionNode')
+        :param children: List of children nodes (if not empty)
+        :param leaf: Exposed value (if present)
+        """
         self.node_type = type
         self.children = children if children is not None else []
         self.leaf = leaf

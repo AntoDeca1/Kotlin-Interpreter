@@ -1,12 +1,11 @@
 import ply.yacc as yacc
 from lexer import *
 from Node import *
-from utilities import *
 
-symbol_tables = [{}]
-
+# Start symbol of the grammar
 start = "program"
 
+# Precedence and associativity
 precedence = (
     ('right', 'EQUAL'),
     ('left', 'LOGICAL_OR'),
@@ -19,11 +18,13 @@ precedence = (
 )
 
 
+# Rule to use empty string inside the productions
 def p_empty(p):
     'empty :'
     pass
 
 
+# Rule to give to this expression the precedence specified above
 def p_expr_uminus(p):
     'expression : MINUS expression %prec UMINUS'
     p[0] = -p[2]
@@ -69,7 +70,6 @@ def p_statement(p):
                  | assignment semis
                  | return_statement semis
                  | print_statement semis '''
-    # Evitiamo lo statementNode
     p[0] = p[1]
 
 
@@ -82,18 +82,11 @@ def p_block(p):
         p[0] = p[2]
 
 
-def p_sync(p):
-    '''sync : NEWLINE'''
-    pass
-
-
-# NEW(Starting to introduce the function definition)
 def p_return_statement(p):
     '''return_statement : RETURN expression'''
     p[0] = Node("ReturnNode", children=[p[2]])
 
 
-# return var prova String = prova(x,y)
 def p_assignment(p):
     '''assignment : ID EQUAL expression'''
     id_node = Node("TermNode", leaf=p[1])
@@ -161,9 +154,8 @@ def p_expression(p):
                   | expression LESS_THAN_EQUAL expression
                   | LPAREN expression RPAREN '''
 
-    # 3+2
     if len(p) == 2:
-        p[0] = p[1]  # Se passo da term ad expression non creo un expressionNode ma lo creo solo alla fine
+        p[0] = p[1]
     elif len(p) == 4 and p[1] == "(":
         p[0] = p[2]
     elif len(p) == 3:
@@ -176,18 +168,15 @@ def p_expression(p):
 
 def p_parameter_calling(p):
     '''parameter_calling : term'''
-    # Nel caso in cui siano una lista di id,semplicemente ritornare il termNode
     p[0] = p[1]
 
 
 def p_parameter_declaration(p):
     '''parameter_declaration : ID COLONS type'''
-    # Nel caso in cui siano una lista di id,semplicemente ritornare il termNode
     id_node = Node("TermNode", leaf=p[1])
     p[0] = Node("ParameterDeclarationNode", children=[id_node, p[3]])
 
 
-# NEW(Starting to introduce the if else statement)
 def p_if_statement(p):
     '''if_statement : IF LPAREN expression RPAREN block
                     | IF LPAREN expression RPAREN block ELSE block'''
@@ -271,12 +260,12 @@ def p_readline(p):
     p[0] = Node("ReadlineNode")
 
 
-# PANIC MODE
+# Syntax error handling
 def p_error(p):
-    line = p.lineno  # Get the line number where the error occurred
-    token = p.value  # Get the token that caused the error
+    line = p.lineno
+    token = p.value
     print(f"Error at line {line}: Unexpected token '{token}'")
-    parser.success = False  # Set a flag to indicate parsing failure
+    parser.success = False
 
 
 parser = yacc.yacc()

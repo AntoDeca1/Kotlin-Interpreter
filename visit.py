@@ -7,12 +7,21 @@ sys.tracebacklimit = 0
 
 
 class Visitor:
-
     def __init__(self, s_t, f_t):
+        """
+        Visit the AST checking for semantic errors
+        :param s_t: variable symbol tables
+        :param f_t: function symbol tables
+        """
         self.s_t = s_t
         self.f_t = f_t
 
     def visit(self, node):
+        """
+        Recursively visit the AST managing the scopes checking for possibles
+        semantic errors
+        :param node: Current node in the recursion
+        """
         try:
             if node.node_type == "ProgramNode":
                 result = self.visit(node.children[0])
@@ -25,18 +34,16 @@ class Visitor:
                         return result
                 return
             elif node.node_type == "VariableDeclarationNode":
+                id = self.visit(node.children[0])
                 if len(node.children) == 3:
-                    id = self.visit(node.children[0])
                     type = self.visit(node.children[1])
                     expression = self.visit(node.children[2])
                     if type != get_type(expression):
                         raise TypeMismatch(f"Inferred type is {get_type(expression)} but {type} was expected")
-                    self.s_t.register_variable(id, type, expression, node.leaf)
                 else:
-                    id = self.visit(node.children[0])
                     expression = self.visit(node.children[1])
                     type = get_type(expression)
-                    self.s_t.register_variable(id, type, expression, node.leaf)
+                self.s_t.register_variable(id, type, expression, node.leaf)
             elif node.node_type == "WhileStatementNode":
                 self.s_t.enter_scope()
                 while self.visit(node.children[0]):
@@ -80,20 +87,18 @@ class Visitor:
                 type = get_type(value)
                 variable_type = self.s_t.find_variable(id)[0]
                 if variable_type == type:
-                    self.s_t.modify_variable(id, value, type)
+                    self.s_t.modify_variable(id, value)
                 else:
                     raise TypeMismatch(f"Inferred type is {type} but {variable_type} was expected")
                 return
             elif node.node_type == "FunctionDeclarationNode":
+                function_name = self.visit(node.children[0])
+                parameter_list = self.visit(node.children[1])
                 if len(node.children) == 4:
-                    function_name = self.visit(node.children[0])
-                    parameter_list = self.visit(node.children[1])
                     output_type = self.visit(node.children[2])
                     stataments_list = node.children[3]
                     self.f_t.register_function(function_name, parameter_list, stataments_list, output_type)
                 else:
-                    function_name = self.visit(node.children[0])
-                    parameter_list = self.visit(node.children[1])
                     stataments_list = node.children[2]
                     self.f_t.register_function(function_name, parameter_list, stataments_list)
                 return
@@ -196,6 +201,11 @@ class Visitor:
             print(f"Exception: {e}")
 
     def binary_expression(self, node):
+        """
+        Management of the binary expressions
+        :param node: Expression node
+        :return: Result
+        """
         first_operator = self.check_if_st(node.children[0])
         second_operator = self.check_if_st(node.children[1])
         try:
@@ -229,6 +239,9 @@ class Visitor:
             raise TypeMismatch(f"{e}").with_traceback(None) from None
 
     def check_if_main(self):
+        """
+        Check if the main declaration is present, if not raise an exception
+        """
         try:
             parameter_list, statament_list, output_type = self.f_t.find_variable('main')
             return statament_list
@@ -236,6 +249,12 @@ class Visitor:
             raise MainException("Expecting a main declaration")
 
     def check_if_st(self, node):
+        """
+        Since a term node could be both an ID or a literal,
+        if it is an ID search for an occurrency in the symbol table and retrieve its value,
+        if it is a literal node simply visits it in order to retrieve its value.
+        The exceptions are managed in the find_variable function.
+        """
         if node.node_type == "TermNode":
             id = self.visit(node)
             return self.s_t.find_variable(id)[1]
