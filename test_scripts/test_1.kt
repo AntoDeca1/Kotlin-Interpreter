@@ -6,5 +6,7 @@ fun main() {
     }
     x=40
     print(x+ y)
+    val z = readLine()
+    print(z)
 }
    
