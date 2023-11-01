@@ -3,7 +3,7 @@ from lexer import lexer
 from visit import Visitor
 from symbol_table import *
 
-with open('test_scripts/test_2.kt', 'r') as file:
+with open('test_scripts/test_4.kt', 'r') as file:
     input_sentence = file.read()
 
 lexer.input(input_sentence)

@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, type, children=None, leaf=None):
+    def __init__(self, type, children=None, leaf=None, lineno=None):
         """
         Generic node of the AST
         :param type: Type of the node (e.g. 'ExpressionNode')
@@ -9,6 +9,7 @@ class Node:
         self.node_type = type
         self.children = children if children is not None else []
         self.leaf = leaf
+        self.lineno = lineno
 
     def add_child(self, child_node):
         self.children.append(child_node)

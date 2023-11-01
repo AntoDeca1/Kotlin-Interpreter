@@ -39,7 +39,8 @@ class Visitor:
                     type = self.visit(node.children[1])
                     expression = self.visit(node.children[2])
                     if type != get_type(expression):
-                        raise TypeMismatch(f"Inferred type is {get_type(expression)} but {type} was expected")
+                        raise TypeMismatch(
+                            f" {node.children[1].lineno}: Inferred type is {get_type(expression)} but {type} was expected")
                 else:
                     expression = self.visit(node.children[1])
                     type = get_type(expression)
@@ -61,7 +62,8 @@ class Visitor:
             elif node.node_type == "If-else-StatementNode":
                 condition = self.visit(node.children[0])
                 if get_type(condition) != "Boolean":
-                    raise TypeMismatch("The integer literal does not conform to the expected type Boolean")
+                    raise TypeMismatch(
+                        f"{node.children[0].lineno}The integer literal does not conform to the expected type Boolean")
                 if condition:
                     self.s_t.enter_scope()
                     statement_list = self.visit(node.children[1])
@@ -75,7 +77,8 @@ class Visitor:
             elif node.node_type == "IfStatementNode":
                 condition = self.visit(node.children[0])
                 if get_type(condition) != "Boolean":
-                    raise TypeMismatch("The integer literal does not conform to the expected type Boolean")
+                    raise TypeMismatch(
+                        f"At line {node.children[0].lineno}:The integer literal does not conform to the expected type Boolean")
                 if condition:
                     self.s_t.enter_scope()
                     statement_list = self.visit(node.children[1])
@@ -89,7 +92,8 @@ class Visitor:
                 if variable_type == type:
                     self.s_t.modify_variable(id, value)
                 else:
-                    raise TypeMismatch(f"Inferred type is {type} but {variable_type} was expected")
+                    raise TypeMismatch(
+                        f"{node.children[1].lineno} Inferred type is {type} but {variable_type} was expected")
                 return
             elif node.node_type == "FunctionDeclarationNode":
                 function_name = self.visit(node.children[0])
@@ -97,24 +101,28 @@ class Visitor:
                 if len(node.children) == 4:
                     output_type = self.visit(node.children[2])
                     stataments_list = node.children[3]
-                    self.f_t.register_function(function_name, parameter_list, stataments_list, output_type)
+                    self.f_t.register_function(function_name, parameter_list, stataments_list, output_type,
+                                               lineno=node.children[0].lineno)
                 else:
                     stataments_list = node.children[2]
-                    self.f_t.register_function(function_name, parameter_list, stataments_list)
+                    self.f_t.register_function(function_name, parameter_list, stataments_list,
+                                               lineno=node.children[0].lineno)
                 return
             elif node.node_type == "FunctionCallingNode":
                 function_name = self.visit(node.children[0])
                 input_parameters = self.visit(node.children[1])
-                parameter_list, statament_list, output_type = self.f_t.find_variable(function_name)
+                parameter_list, statament_list, output_type, lineno = self.f_t.find_variable(function_name)
                 if parameter_list is None and input_parameters is None:
                     self.s_t.enter_scope()
                     result = self.visit(statament_list)
-                    self.s_t.exit_scope()
-                    return result
+                    result_type = get_type(result)
+                    if self.check_type_match(result_type, output_type, statament_list, lineno): return result
                 elif parameter_list is None and input_parameters is not None:
-                    raise ParamatersMismatch(f"Too many arguments for local fun {function_name}")
+                    raise ParamatersMismatch(
+                        f"{node.children[0].lineno} : Too many arguments for local fun {function_name}")
                 elif parameter_list is not None and input_parameters is None:
-                    raise ParamatersMismatch(f"No value passed for parameters {parameter_list}")
+                    raise ParamatersMismatch(
+                        f"{node.children[0].lineno} : No value passed for parameters {parameter_list}")
                 input_types = [get_type(parameter) for parameter in input_parameters]
                 correct_types = [parameter[1] for parameter in parameter_list]
                 if input_types == correct_types:
@@ -124,15 +132,10 @@ class Visitor:
                         self.s_t.register_variable(name, type, parameter_declared, 'val')
                     result = self.visit(statament_list)
                     result_type = get_type(result)
-                    if result_type != output_type:
-                        raise TypeMismatch(
-                            "Type Mismatch: The declared output type does not conform with the real one").with_traceback(
-                            None) from None
-                    else:
-                        self.s_t.exit_scope()
-                        return result
+                    if self.check_type_match(result_type, output_type): return result
                 else:
-                    raise ParamatersMismatch(f"Parameters Mismatch in fun {function_name}").with_traceback(
+                    raise ParamatersMismatch(
+                        f" {node.children[0].lineno}: Parameters Mismatch in fun {function_name}").with_traceback(
                         None) from None
             elif node.node_type == "RangeOperator":
                 id = self.visit(node.children[0])
@@ -236,14 +239,27 @@ class Visitor:
             elif node.leaf == "!=":
                 return first_operator != second_operator
         except Exception as e:
-            raise TypeMismatch(f"{e}").with_traceback(None) from None
+            raise TypeMismatch(f"At line {node.lineno} : {e} ").with_traceback(None) from None
+
+    def check_type_match(self, result_type, output_type, statement_list, function_decl_line):
+        lineno = function_decl_line
+        last_child = statement_list.children[-1]
+        if last_child.node_type == "ReturnNode":
+            lineno = statement_list.children[-1].lineno
+        if result_type != output_type:
+            raise TypeMismatch(
+                f": {lineno}  Type Mismatch: The declared output type does not conform with the real one").with_traceback(
+                None) from None
+        else:
+            self.s_t.exit_scope()
+            return True
 
     def check_if_main(self):
         """
         Check if the main declaration is present, if not raise an exception
         """
         try:
-            parameter_list, statament_list, output_type = self.f_t.find_variable('main')
+            parameter_list, statament_list, output_type, _ = self.f_t.find_variable('main')
             return statament_list
         except Exception as e:
             raise MainException("Expecting a main declaration")

@@ -69,7 +69,7 @@ def p_statement(p):
                  | for_statement semis
                  | assignment semis
                  | return_statement semis
-                 | print_statement semis '''
+                 | print_statement semis'''
     p[0] = p[1]
 
 
@@ -84,24 +84,30 @@ def p_block(p):
 
 def p_return_statement(p):
     '''return_statement : RETURN expression'''
-    p[0] = Node("ReturnNode", children=[p[2]])
+    lineno = p.slice[1].lineno
+    p[0] = Node("ReturnNode", children=[p[2]], lineno=lineno)
 
 
 def p_assignment(p):
     '''assignment : ID EQUAL expression'''
-    id_node = Node("TermNode", leaf=p[1])
+    lineno = p.slice[1].lineno
+    id_node = Node("TermNode", leaf=p[1], lineno=lineno)
     p[0] = Node("AssignmentNode", children=[id_node, p[3]])
 
 
 def p_function_declaration(p):
     '''function_declaration : FUN ID LPAREN parameter_list_declaration RPAREN COLONS type block
                             | FUN ID LPAREN parameter_list_declaration RPAREN block
+                            | FUN ID LPAREN RPAREN COLONS type block
                             | FUN ID LPAREN RPAREN block'''
-    id_node = Node("TermNode", leaf=p[2])
+    lineno = p.slice[2].lineno
+    id_node = Node("TermNode", leaf=p[2], lineno=lineno)
     if len(p) == 9:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[7], p[8]])
     elif len(p) == 7:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, p[4], p[6]])
+    elif len(p) == 8:
+        p[0] = Node("FunctionDeclarationNode", children=[id_node, Node("EmptyNode", leaf=" "), p[6], p[7]])
     else:
         p[0] = Node("FunctionDeclarationNode", children=[id_node, Node("EmptyNode", leaf=" "), p[5]])
 
@@ -109,11 +115,11 @@ def p_function_declaration(p):
 def p_function_calling(p):
     '''function_calling : ID LPAREN parameter_list_calling RPAREN
                         | ID LPAREN RPAREN'''
+    lineno = p.slice[1].lineno
+    id_node = Node("TermNode", leaf=p[1], lineno=lineno)
     if len(p) == 5:
-        id_node = Node("TermNode", leaf=p[1])
         p[0] = Node("FunctionCallingNode", children=[id_node, p[3]])
     else:
-        id_node = Node("TermNode", leaf=p[1])
         p[0] = Node("FunctionCallingNode", children=[id_node, Node("EmptyNode", leaf="")])
 
 
@@ -159,11 +165,11 @@ def p_expression(p):
     elif len(p) == 4 and p[1] == "(":
         p[0] = p[2]
     elif len(p) == 3:
-        operator = Node("UnaryExpressionNode", leaf=p[1], children=[p[2]])
-        p[0] = Node("ExpressionNode", children=operator, leaf="=")
+        operator = Node("UnaryExpressionNode", leaf=p[1], children=[p[2]], lineno=p[2].lineno)
+        p[0] = Node("ExpressionNode", children=operator, leaf="=", lineno=p[2].lineno)
     else:
-        operator = Node("BinaryExpressionNode", leaf=p[2], children=[p[1], p[3]])
-        p[0] = Node("ExpressionNode", children=[operator], leaf="=")
+        operator = Node("BinaryExpressionNode", leaf=p[2], children=[p[1], p[3]], lineno=p[1].lineno)
+        p[0] = Node("ExpressionNode", children=[operator], leaf="=", lineno=p[1].lineno)
 
 
 def p_parameter_calling(p):
@@ -223,7 +229,8 @@ def p_type(p):
     ''' type : INT
              | STRING
              | BOOLEAN'''
-    p[0] = Node("TypeNode", leaf=p[1])
+    lineno = p.slice[1].lineno
+    p[0] = Node("TypeNode", leaf=p[1], lineno=lineno)
 
 
 def p_print(p):
@@ -239,7 +246,8 @@ def p_term(p):
     if isinstance(p[1], Node):
         p[0] = p[1]
     else:
-        p[0] = Node("TermNode", leaf=p[1])
+        lineno = p.slice[1].lineno
+        p[0] = Node("TermNode", leaf=p[1], lineno=lineno)
 
 
 def p_literal(p):
@@ -247,7 +255,8 @@ def p_literal(p):
                 | TRUE
                 | FALSE
                 | STRING_LITERAL'''
-    p[0] = Node("LiteralNode", leaf=p[1])
+    lineno = p.slice[1].lineno
+    p[0] = Node("LiteralNode", leaf=p[1], lineno=lineno)
 
 
 def p_semis(p):

@@ -83,7 +83,7 @@ class FunctionTable(SymbolTable):
     def __init__(self):
         super().__init__()
 
-    def register_function(self, name, parameter_list, statament_list, output_type=None):
+    def register_function(self, name, parameter_list, statament_list, output_type=None, lineno = None):
         """
         Add a function to the current function table
         :param name: Function ID
@@ -94,4 +94,4 @@ class FunctionTable(SymbolTable):
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
             raise VariableAlreadyDeclared(f"Function {name} already declared in the current scope")
-        current_symbol_table[name] = (parameter_list, statament_list, output_type)
+        current_symbol_table[name] = (parameter_list, statament_list, output_type, lineno)

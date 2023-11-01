@@ -9,4 +9,3 @@ fun main() {
     val z = readLine()
     print(z)
 }
-   
