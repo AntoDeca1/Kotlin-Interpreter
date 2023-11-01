@@ -67,7 +67,7 @@ The project was carried out for the Formal Languages and Compilers course taught
 Within the project is present a folder containing some test_scripts useful for evaluating the proper functioning of the interpreter. In the ***main.py*** file you just need to change the path indicating the particular script you want to execute and see the result. The output provides the AST representing the program and its interpretation.The first two files(test_1.kt,test_2.kt) are designed to show correct operation, the last 3(test_3.kt,test_4.kt,test_5.kt) the ability to detect errors.
 
 ```python
-#main_exec.py
+#main.py
 with open('test_scripts/test_1.kt', 'r') as file:
     input_sentence = file.read()
 ```
@@ -76,12 +76,6 @@ with open('test_scripts/test_1.kt', 'r') as file:
 
 ## Resources
 
-<aside>
-📄 PLY Documentation : [https://www.dabeaz.com/ply/ply.html](https://www.dabeaz.com/ply/ply.html)
+[PLY (Python Lex-Yacc)](https://www.dabeaz.com/ply/ply.html)
 
-</aside>
-
-<aside>
-👨🏻‍💻 Kotlin Grammar : [https://kotlinlang.org/docs/reference/grammar.html](https://kotlinlang.org/docs/reference/grammar.html)
-
-</aside>
+[Kotlin Programming Language](https://kotlinlang.org/docs/reference/grammar.html)
