@@ -88,7 +88,7 @@ class Visitor:
                 id = self.visit(node.children[0])
                 value = self.visit(node.children[1])
                 type = get_type(value)
-                variable_type = self.s_t.find_variable(id)[0]
+                variable_type = self.s_t.find_variable(id, lineno=node.children[0].lineno)[0]
                 if variable_type == type:
                     self.s_t.modify_variable(id, value)
                 else:
@@ -111,7 +111,8 @@ class Visitor:
             elif node.node_type == "FunctionCallingNode":
                 function_name = self.visit(node.children[0])
                 input_parameters = self.visit(node.children[1])
-                parameter_list, statament_list, output_type, lineno = self.f_t.find_variable(function_name)
+                parameter_list, statament_list, output_type, lineno = self.f_t.find_variable(function_name,
+                                                                                             node.children[0].lineno)
                 if parameter_list is None and input_parameters is None:
                     self.s_t.enter_scope()
                     result = self.visit(statament_list)
@@ -132,7 +133,7 @@ class Visitor:
                         self.s_t.register_variable(name, type, parameter_declared, 'val')
                     result = self.visit(statament_list)
                     result_type = get_type(result)
-                    if self.check_type_match(result_type, output_type): return result
+                    if self.check_type_match(result_type, output_type, statament_list, lineno): return result
                 else:
                     raise ParamatersMismatch(
                         f" {node.children[0].lineno}: Parameters Mismatch in fun {function_name}").with_traceback(
@@ -209,8 +210,8 @@ class Visitor:
         :param node: Expression node
         :return: Result
         """
-        first_operator = self.check_if_st(node.children[0])
-        second_operator = self.check_if_st(node.children[1])
+        first_operator = self.check_if_st(node.children[0], node.children[0].lineno)
+        second_operator = self.check_if_st(node.children[1], node.children[1].lineno)
         try:
             if node.leaf == "+":
                 if get_type(first_operator) == "String":
@@ -264,7 +265,7 @@ class Visitor:
         except Exception as e:
             raise MainException("Expecting a main declaration")
 
-    def check_if_st(self, node):
+    def check_if_st(self, node, lineno=None):
         """
         Since a term node could be both an ID or a literal,
         if it is an ID search for an occurrency in the symbol table and retrieve its value,
@@ -273,6 +274,6 @@ class Visitor:
         """
         if node.node_type == "TermNode":
             id = self.visit(node)
-            return self.s_t.find_variable(id)[1]
+            return self.s_t.find_variable(id, lineno=lineno)[1]
         else:
             return self.visit(node)

@@ -34,7 +34,7 @@ class SymbolTable:
             raise VariableAlreadyDeclared(f"Variable {name} already declared in the current scope")
         current_symbol_table[name] = (type, value, is_Var)
 
-    def find_variable(self, name):
+    def find_variable(self, name, lineno=None):
         """
         Search into the scopes,starting from the inner scope, return the first occurrence
         :param name: Variable name
@@ -42,7 +42,7 @@ class SymbolTable:
         for symbol_table in reversed(self.symbol_tables):
             if name in symbol_table:
                 return symbol_table[name]
-        raise VariableNotDeclared(f"Variable {name} not declared")
+        raise VariableNotDeclared(f" {lineno} Variable {name} not declared")
 
     def modify_variable(self, name, new_value):
         """
@@ -83,7 +83,7 @@ class FunctionTable(SymbolTable):
     def __init__(self):
         super().__init__()
 
-    def register_function(self, name, parameter_list, statament_list, output_type=None, lineno = None):
+    def register_function(self, name, parameter_list, statament_list, output_type=None, lineno=None):
         """
         Add a function to the current function table
         :param name: Function ID

@@ -1,3 +1,4 @@
 fun main(){
-    var y:Int = x+ 10
+    fun prova(x:Int){print("ciao")}
+    prova(3)
 }
