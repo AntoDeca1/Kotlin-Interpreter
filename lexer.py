@@ -104,4 +104,5 @@ def t_ID(t):
     return t
 
 
-lexer = lex.lex()
+def initialize_lexer():
+    return lex.lex()

@@ -278,3 +278,7 @@ def p_error(p):
 
 
 parser = yacc.yacc()
+
+
+def initialize_parser():
+    return yacc.yacc()

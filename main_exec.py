@@ -1,5 +1,5 @@
-from parser import parser
-from lexer import lexer
+from parser import initialize_parser
+from lexer import initialize_lexer
 from visit import Visitor
 import sys
 import os
@@ -25,8 +25,13 @@ while True:
     print("You selected the following script\n")
     print("------------Script-to-be-interpreted---------------------")
     print(input_sentence)
-    lexer.input(input_sentence)
-    parsed_result = parser.parse(lexer=lexer)
+
+    # Create a new lexer and parser instance for each iteration
+    new_lexer = initialize_lexer()
+    new_parser = initialize_parser()
+
+    new_lexer.input(input_sentence)
+    parsed_result = new_parser.parse(lexer=new_lexer)
 
     s_t = SymbolTable()
     f_t = FunctionTable()
