@@ -1,4 +1,3 @@
 fun main(){
-    fun prova(x:Int){print("ciao")}
-    prova(3)
+    val y:Int = x+10
 }
