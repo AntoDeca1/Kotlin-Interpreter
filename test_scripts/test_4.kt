@@ -1,3 +1,8 @@
 fun main(){
-    val y:Int = x+10
+    var x=0;
+    while(x<5){
+     val z=10
+     x=x+1
+    }
+
 }

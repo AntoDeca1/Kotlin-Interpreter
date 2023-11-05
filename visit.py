@@ -44,7 +44,7 @@ class Visitor:
                 else:
                     expression = self.visit(node.children[1])
                     type = get_type(expression)
-                self.s_t.register_variable(id, type, expression, node.leaf)
+                self.s_t.register_variable(id, type, expression, node.leaf, node.children[0].lineno)
             elif node.node_type == "WhileStatementNode":
                 self.s_t.enter_scope()
                 while self.visit(node.children[0]):
@@ -54,10 +54,11 @@ class Visitor:
             elif node.node_type == "ForStatement":
                 self.s_t.enter_scope()
                 id, range_list, step = self.visit(node.children[0])
-                self.s_t.register_variable(id, 'Int', range_list[0], 'var')
+                self.s_t.register_variable(id, 'Int', range_list[0], 'val')
                 for i in range_list:
                     self.visit(node.children[1])
-                    self.s_t.local_modify_variable(id, i + step, 'Int')
+                    self.s_t.clean_scope()
+                    self.s_t.register_variable(id, 'Int', i + step, 'val')
                 self.s_t.exit_scope()
             elif node.node_type == "If-else-StatementNode":
                 condition = self.visit(node.children[0])
@@ -90,7 +91,7 @@ class Visitor:
                 type = get_type(value)
                 variable_type = self.s_t.find_variable(id, lineno=node.children[0].lineno)[0]
                 if variable_type == type:
-                    self.s_t.modify_variable(id, value)
+                    self.s_t.modify_variable(id, value, lineno=node.children[0].lineno)
                 else:
                     raise TypeMismatch(
                         f"{node.children[1].lineno} Inferred type is {type} but {variable_type} was expected")
@@ -130,7 +131,8 @@ class Visitor:
                     self.s_t.enter_scope()
                     for parameter_input, parameter_declared in zip(parameter_list, input_parameters):
                         name, type = parameter_input
-                        self.s_t.register_variable(name, type, parameter_declared, 'val')
+                        self.s_t.register_variable(name, type, parameter_declared, 'val',
+                                                   lineno=node.children[0].lineno)
                     result = self.visit(statament_list)
                     result_type = get_type(result)
                     if self.check_type_match(result_type, output_type, statament_list, lineno): return result
@@ -189,19 +191,8 @@ class Visitor:
                 return node.leaf
             elif node.node_type == "LiteralNode":
                 return node.leaf
-        except TypeMismatch as e:
-            print(f"Exception: {e}")
-        except ParamatersMismatch as e:
-            print(f"Exception: {e}")
-        except VariableNotDeclared as e:
-            print(f"Exception: {e}")
-        except VariableAlreadyDeclared as e:
-            print(f"Exception: {e}")
-        except MainException as e:
-            print(f"Exception: {e}")
-        except VariableNotModifiable as e:
-            print(f"Exception: {e}")
-        except Exception as e:
+        except (TypeMismatch, ParamatersMismatch, VariableNotDeclared, VariableAlreadyDeclared, MainException,
+                VariableNotModifiable, Exception) as e:
             print(f"Exception: {e}")
 
     def binary_expression(self, node):
@@ -244,8 +235,10 @@ class Visitor:
 
     def check_type_match(self, result_type, output_type, statement_list, function_decl_line):
         lineno = function_decl_line
-        last_child = statement_list.children[-1]
-        if last_child.node_type == "ReturnNode":
+        last_child = None
+        if statement_list.node_type != "EmptyNode":
+            last_child = statement_list.children[-1]
+        if last_child and last_child.node_type == "ReturnNode":
             lineno = statement_list.children[-1].lineno
         if result_type != output_type:
             raise TypeMismatch(

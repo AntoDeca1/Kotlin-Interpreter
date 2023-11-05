@@ -21,7 +21,7 @@ class SymbolTable:
         """
         self.symbol_tables.pop()
 
-    def register_variable(self, name, type, value, is_Var):
+    def register_variable(self, name, type, value, is_Var, lineno=None):
         """
         Add a variable to our symbol table
         :param name: Variable name
@@ -34,6 +34,20 @@ class SymbolTable:
             raise VariableAlreadyDeclared(f"Variable {name} already declared in the current scope")
         current_symbol_table[name] = (type, value, is_Var)
 
+    def clean_scope(self, preserved=None):
+        """
+        Function that clean the scope
+        If specified you could preserve some of the variables in the scope
+        Used in: WhileLoopNode,ForLoopNode (visit.py)
+        :return:
+        """
+        if preserved is not None:
+            current_scope = self.symbol_tables[-1].copy()
+            new_scope = {current_scope[var] for var in preserved}
+            self.symbol_tables[-1] = new_scope
+        else:
+            self.symbol_tables[-1] = {}
+
     def find_variable(self, name, lineno=None):
         """
         Search into the scopes,starting from the inner scope, return the first occurrence
@@ -42,9 +56,9 @@ class SymbolTable:
         for symbol_table in reversed(self.symbol_tables):
             if name in symbol_table:
                 return symbol_table[name]
-        raise VariableNotDeclared(f" {lineno} Variable {name} not declared")
+        raise VariableNotDeclared(f" {lineno}:  Variable {name} not declared")
 
-    def modify_variable(self, name, new_value):
+    def modify_variable(self, name, new_value, lineno=None):
         """
         Modify the value of the specified variable in all the scopes starting from the inner one
         :param name: Variable name
@@ -58,9 +72,9 @@ class SymbolTable:
                     symbol_table[name] = (type, new_value, variable_type)
                     found = True
                 else:
-                    raise VariableNotModifiable("Val variables are not modifiable")
+                    raise VariableNotModifiable(f" {lineno}: Val variables are not modifiable")
         if found == False:
-            raise VariableNotDeclared(f"Variable {name} not declared")
+            raise VariableNotDeclared(f" {lineno}: Variable {name} not declared")
 
     def local_modify_variable(self, name, new_value, type):
         """
@@ -93,5 +107,5 @@ class FunctionTable(SymbolTable):
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise VariableAlreadyDeclared(f"Function {name} already declared in the current scope")
+            raise VariableAlreadyDeclared(f" {lineno}: Function {name} already declared in the current scope")
         current_symbol_table[name] = (parameter_list, statament_list, output_type, lineno)

@@ -11,7 +11,7 @@ while True:
     test_number = input("Please input the test script you would like to try [1-2-3-4-5] (Press Enter to exit): ")
 
     if not test_number:
-        break  # Exit if the user presses Enter without providing a test number.
+        break
 
     test_script_path = os.path.join(base_dir, f'test_scripts/test_{test_number}.kt')
 
