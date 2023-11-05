@@ -239,6 +239,16 @@ class Visitor:
             raise TypeMismatch(f"Error at line At line {node.lineno} : {e} ").with_traceback(None) from None
 
     def check_type_match(self, result_type, output_type, statement_list, function_decl_line):
+        """
+        Function useful to encapsulate the logic for retrieving the correct line error when the result type of
+        a function does not correspond with the real one. In this cases we want the error points to the line
+        where the return is or if the return is not present to the line of the function declaration.
+        :param result_type: Actual type
+        :param output_type: Expected type
+        :param statement_list: List of statements that compose the body of a function
+        :param function_decl_line: Line where the function is declared
+        :return:
+        """
         lineno = function_decl_line
         last_child = None
         if statement_list.node_type != "EmptyNode":
