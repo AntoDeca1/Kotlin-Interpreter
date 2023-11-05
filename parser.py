@@ -27,7 +27,8 @@ def p_empty(p):
 # Rule to give to this expression the precedence specified above
 def p_expr_uminus(p):
     'expression : MINUS expression %prec UMINUS'
-    p[0] = -p[2]
+    operator = Node("UnaryExpressionNode", leaf=p[1], children=[p[2]], lineno=p[2].lineno)
+    p[0] = Node("ExpressionNode", children=[operator], leaf="=", lineno=p[2].lineno)
 
 
 def p_program(p):
@@ -166,7 +167,7 @@ def p_expression(p):
         p[0] = p[2]
     elif len(p) == 3:
         operator = Node("UnaryExpressionNode", leaf=p[1], children=[p[2]], lineno=p[2].lineno)
-        p[0] = Node("ExpressionNode", children=operator, leaf="=", lineno=p[2].lineno)
+        p[0] = Node("ExpressionNode", children=[operator], leaf="=", lineno=p[2].lineno)
     else:
         operator = Node("BinaryExpressionNode", leaf=p[2], children=[p[1], p[3]], lineno=p[1].lineno)
         p[0] = Node("ExpressionNode", children=[operator], leaf="=", lineno=p[1].lineno)
@@ -218,7 +219,7 @@ def p_variable_declaration(p):
                             | VAR ID COLONS type EQUAL expression
                             | VAL ID EQUAL expression
                             | VAR ID EQUAL expression  '''
-    id_Node = Node("TermNode", leaf=p[2])
+    id_Node = Node("TermNode", leaf=p[2], lineno=p.slice[2].lineno)
     if len(p) == 7:
         p[0] = Node("VariableDeclarationNode", children=[id_Node, p[4], p[6]], leaf=p[1])
     else:

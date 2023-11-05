@@ -31,7 +31,7 @@ class SymbolTable:
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise VariableAlreadyDeclared(f"Variable {name} already declared in the current scope")
+            raise VariableAlreadyDeclared(f" Error at line {lineno} Variable {name} already declared in the current scope")
         current_symbol_table[name] = (type, value, is_Var)
 
     def clean_scope(self, preserved=None):
@@ -56,7 +56,7 @@ class SymbolTable:
         for symbol_table in reversed(self.symbol_tables):
             if name in symbol_table:
                 return symbol_table[name]
-        raise VariableNotDeclared(f" {lineno}:  Variable {name} not declared")
+        raise VariableNotDeclared(f" Error at line {lineno}:  Variable {name} not declared")
 
     def modify_variable(self, name, new_value, lineno=None):
         """
@@ -72,25 +72,9 @@ class SymbolTable:
                     symbol_table[name] = (type, new_value, variable_type)
                     found = True
                 else:
-                    raise VariableNotModifiable(f" {lineno}: Val variables are not modifiable")
+                    raise VariableNotModifiable(f" Error at line {lineno}: Val variables are not modifiable")
         if found == False:
-            raise VariableNotDeclared(f" {lineno}: Variable {name} not declared")
-
-    def local_modify_variable(self, name, new_value, type):
-        """
-        Modify only the first occurrence.
-        NB. Used in the for loop
-        :param name: Variable name
-        :param new_value: New value
-        :param type: Variable type
-        """
-        found = False
-        last_symbol_table = self.symbol_tables[-1]
-        if name in last_symbol_table:
-            last_symbol_table[name] = (type, new_value, 'Var')
-            found = True
-        if found == False:
-            raise VariableNotDeclared(f"Variable {name} not declared")
+            raise VariableNotDeclared(f" Error at line {lineno}: Variable {name} not declared")
 
 
 class FunctionTable(SymbolTable):
@@ -107,5 +91,5 @@ class FunctionTable(SymbolTable):
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise VariableAlreadyDeclared(f" {lineno}: Function {name} already declared in the current scope")
+            raise VariableAlreadyDeclared(f" Error at line {lineno}: Function {name} already declared in the current scope")
         current_symbol_table[name] = (parameter_list, statament_list, output_type, lineno)

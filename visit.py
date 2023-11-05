@@ -40,15 +40,16 @@ class Visitor:
                     expression = self.visit(node.children[2])
                     if type != get_type(expression):
                         raise TypeMismatch(
-                            f" {node.children[1].lineno}: Inferred type is {get_type(expression)} but {type} was expected")
+                            f" Error at line {node.children[1].lineno}: Inferred type is {get_type(expression)} but {type} was expected")
                 else:
                     expression = self.visit(node.children[1])
                     type = get_type(expression)
-                self.s_t.register_variable(id, type, expression, node.leaf, node.children[0].lineno)
+                self.s_t.register_variable(id, type, expression, node.leaf, lineno=node.children[0].lineno)
             elif node.node_type == "WhileStatementNode":
                 self.s_t.enter_scope()
                 while self.visit(node.children[0]):
                     self.visit(node.children[1])
+                    self.s_t.clean_scope()
                 self.s_t.exit_scope()
                 return
             elif node.node_type == "ForStatement":
@@ -64,7 +65,7 @@ class Visitor:
                 condition = self.visit(node.children[0])
                 if get_type(condition) != "Boolean":
                     raise TypeMismatch(
-                        f"{node.children[0].lineno}The integer literal does not conform to the expected type Boolean")
+                        f" Error at line {node.children[0].lineno} The integer literal does not conform to the expected type Boolean")
                 if condition:
                     self.s_t.enter_scope()
                     statement_list = self.visit(node.children[1])
@@ -79,7 +80,7 @@ class Visitor:
                 condition = self.visit(node.children[0])
                 if get_type(condition) != "Boolean":
                     raise TypeMismatch(
-                        f"At line {node.children[0].lineno}:The integer literal does not conform to the expected type Boolean")
+                        f"Error at line {node.children[0].lineno}:The integer literal does not conform to the expected type Boolean")
                 if condition:
                     self.s_t.enter_scope()
                     statement_list = self.visit(node.children[1])
@@ -94,7 +95,7 @@ class Visitor:
                     self.s_t.modify_variable(id, value, lineno=node.children[0].lineno)
                 else:
                     raise TypeMismatch(
-                        f"{node.children[1].lineno} Inferred type is {type} but {variable_type} was expected")
+                        f" Error at line {node.children[1].lineno} Inferred type is {type} but {variable_type} was expected")
                 return
             elif node.node_type == "FunctionDeclarationNode":
                 function_name = self.visit(node.children[0])
@@ -121,10 +122,10 @@ class Visitor:
                     if self.check_type_match(result_type, output_type, statament_list, lineno): return result
                 elif parameter_list is None and input_parameters is not None:
                     raise ParamatersMismatch(
-                        f"{node.children[0].lineno} : Too many arguments for local fun {function_name}")
+                        f" Error at line {node.children[0].lineno} : Too many arguments for local fun {function_name}")
                 elif parameter_list is not None and input_parameters is None:
                     raise ParamatersMismatch(
-                        f"{node.children[0].lineno} : No value passed for parameters {parameter_list}")
+                        f" Error at line {node.children[0].lineno} : No value passed for parameters {parameter_list}")
                 input_types = [get_type(parameter) for parameter in input_parameters]
                 correct_types = [parameter[1] for parameter in parameter_list]
                 if input_types == correct_types:
@@ -138,7 +139,7 @@ class Visitor:
                     if self.check_type_match(result_type, output_type, statament_list, lineno): return result
                 else:
                     raise ParamatersMismatch(
-                        f" {node.children[0].lineno}: Parameters Mismatch in fun {function_name}").with_traceback(
+                        f" Error at line {node.children[0].lineno}: Parameters Mismatch in fun {function_name}").with_traceback(
                         None) from None
             elif node.node_type == "RangeOperator":
                 id = self.visit(node.children[0])
@@ -185,8 +186,11 @@ class Visitor:
             elif node.node_type == "BinaryExpressionNode":
                 return self.binary_expression(node)
             elif node.node_type == "UnaryExpressionNode":
-                operator = node.children[0]
-                return not (operator)
+                operator = node.leaf
+                if operator == "-":
+                    return -(self.check_if_st(node.children[0]))
+                else:
+                    return not (self.check_if_st(node.children[0]))
             elif node.node_type == "TypeNode":
                 return node.leaf
             elif node.node_type == "LiteralNode":
@@ -194,6 +198,7 @@ class Visitor:
         except (TypeMismatch, ParamatersMismatch, VariableNotDeclared, VariableAlreadyDeclared, MainException,
                 VariableNotModifiable, Exception) as e:
             print(f"Exception: {e}")
+            sys.exit(1)
 
     def binary_expression(self, node):
         """
@@ -231,7 +236,7 @@ class Visitor:
             elif node.leaf == "!=":
                 return first_operator != second_operator
         except Exception as e:
-            raise TypeMismatch(f"At line {node.lineno} : {e} ").with_traceback(None) from None
+            raise TypeMismatch(f"Error at line At line {node.lineno} : {e} ").with_traceback(None) from None
 
     def check_type_match(self, result_type, output_type, statement_list, function_decl_line):
         lineno = function_decl_line
@@ -242,7 +247,7 @@ class Visitor:
             lineno = statement_list.children[-1].lineno
         if result_type != output_type:
             raise TypeMismatch(
-                f": {lineno}  Type Mismatch: The declared output type does not conform with the real one").with_traceback(
+                f": Error at line {lineno}  Type Mismatch: The declared output type does not conform with the real one").with_traceback(
                 None) from None
         else:
             self.s_t.exit_scope()
