@@ -1,3 +1,3 @@
 fun main() {
-    val x :Int="Prova"
+    val x :Int= "Prova"
 }

@@ -1,11 +1,11 @@
 fun main(){
-    var x=5;
-    val y=5;
-    val z= x+y
-    for(i in 1..10 step 2){
-      val z=4;
-      }
-    fun prova(x:Int):Int{
-    return 4}
-    prova("ciao")
+    var x =10;
+    val y="Prova"
+    var z= x + 10;
+    print(z)
+    fun prova(u:Int,y:String):Int{
+       x=(-5*2)+(4*3)*12;
+       return u}
+    z=prova(4,5)
+
 }

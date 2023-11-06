@@ -37,12 +37,12 @@ class Visitor:
                 id = self.visit(node.children[0])
                 if len(node.children) == 3:
                     type = self.visit(node.children[1])
-                    expression = self.visit(node.children[2])
+                    expression = self.check_term_expr(node.children[2])
                     if type != get_type(expression):
                         raise TypeMismatch(
                             f" Error at line {node.children[1].lineno}: Inferred type is {get_type(expression)} but {type} was expected")
                 else:
-                    expression = self.visit(node.children[1])
+                    expression = self.check_term_expr(node.children[1])
                     type = get_type(expression)
                 self.s_t.register_variable(id, type, expression, node.leaf, lineno=node.children[0].lineno)
             elif node.node_type == "WhileStatementNode":
@@ -88,7 +88,7 @@ class Visitor:
                     return statement_list
             elif node.node_type == "AssignmentNode":
                 id = self.visit(node.children[0])
-                value = self.visit(node.children[1])
+                value = self.check_term_expr(node.children[1])
                 type = get_type(value)
                 variable_type = self.s_t.find_variable(id, lineno=node.children[0].lineno)[0]
                 if variable_type == type:
@@ -273,10 +273,24 @@ class Visitor:
         except Exception as e:
             raise MainException("Expecting a main declaration")
 
+    def check_term_expr(self, node):
+        '''
+        Useful to check if something is a simple term or an expression
+        If is a term use the check_if_st function to check if it is literal or id
+        If is an expression simply visit it
+        Used in :VariableDeclarationNode,AssignmentNode
+        :param node:
+        :return:
+        '''
+        if node.node_type == "ExpressionNode":
+            return self.visit(node)
+        else:
+            return self.check_if_st(node)
+
     def check_if_st(self, node, lineno=None):
         """
         Since a term node could be both an ID or a literal,
-        if it is an ID search for an occurrency in the symbol table and retrieve its value,
+        if it is an ID search for an occurency in the symbol table and retrieve its value,
         if it is a literal node simply visits it in order to retrieve its value.
         The exceptions are managed in the find_variable function.
         """
