@@ -12,8 +12,6 @@ fun main() {
         k = k - 4
     }
     fun sum(x:Int,y:Int):Int{
-          for(i in 1..4){
-           return i}
           return x+y
           }
 
