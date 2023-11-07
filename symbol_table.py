@@ -34,19 +34,13 @@ class SymbolTable:
             raise VariableAlreadyDeclared(f" Error at line {lineno} Variable {name} already declared in the current scope")
         current_symbol_table[name] = (type, value, is_Var)
 
-    def clean_scope(self, preserved=None):
+    def clean_scope(self):
         """
         Function that clean the scope
-        If specified you could preserve some of the variables in the scope
         Used in: WhileLoopNode,ForLoopNode (visit.py)
         :return:
         """
-        if preserved is not None:
-            current_scope = self.symbol_tables[-1].copy()
-            new_scope = {current_scope[var] for var in preserved}
-            self.symbol_tables[-1] = new_scope
-        else:
-            self.symbol_tables[-1] = {}
+        self.symbol_tables[-1] = {}
 
     def find_variable(self, name, lineno=None):
         """

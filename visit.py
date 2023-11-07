@@ -34,113 +34,21 @@ class Visitor:
                         return result
                 return
             elif node.node_type == "VariableDeclarationNode":
-                id = self.visit(node.children[0])
-                if len(node.children) == 3:
-                    type = self.visit(node.children[1])
-                    expression = self.check_term_expr(node.children[2])
-                    if type != get_type(expression):
-                        raise TypeMismatch(
-                            f" Error at line {node.children[1].lineno}: Inferred type is {get_type(expression)} but {type} was expected")
-                else:
-                    expression = self.check_term_expr(node.children[1])
-                    type = get_type(expression)
-                self.s_t.register_variable(id, type, expression, node.leaf, lineno=node.children[0].lineno)
+                self.visit_variabledeclaration(node)
             elif node.node_type == "WhileStatementNode":
-                self.s_t.enter_scope()
-                while self.visit(node.children[0]):
-                    self.visit(node.children[1])
-                    self.s_t.clean_scope()
-                self.s_t.exit_scope()
-                return
+                self.visit_whilestatement(node)
             elif node.node_type == "ForStatement":
-                self.s_t.enter_scope()
-                id, range_list, step = self.visit(node.children[0])
-                self.s_t.register_variable(id, 'Int', range_list[0], 'val')
-                for i in range_list:
-                    self.visit(node.children[1])
-                    self.s_t.clean_scope()
-                    self.s_t.register_variable(id, 'Int', i + step, 'val')
-                self.s_t.exit_scope()
+                self.visit_forstatement(node)
             elif node.node_type == "If-else-StatementNode":
-                condition = self.visit(node.children[0])
-                if get_type(condition) != "Boolean":
-                    raise TypeMismatch(
-                        f" Error at line {node.children[0].lineno} The integer literal does not conform to the expected type Boolean")
-                if condition:
-                    self.s_t.enter_scope()
-                    statement_list = self.visit(node.children[1])
-                    self.s_t.exit_scope()
-                    return statement_list
-                else:
-                    self.s_t.enter_scope()
-                    statement_list = self.visit(node.children[2])
-                    self.s_t.exit_scope()
-                    return statement_list
+                return self.visit_ifelsestatement(node)
             elif node.node_type == "IfStatementNode":
-                condition = self.visit(node.children[0])
-                if get_type(condition) != "Boolean":
-                    raise TypeMismatch(
-                        f"Error at line {node.children[0].lineno}:The integer literal does not conform to the expected type Boolean")
-                if condition:
-                    self.s_t.enter_scope()
-                    statement_list = self.visit(node.children[1])
-                    self.s_t.exit_scope()
-                    return statement_list
+                return self.visit_ifstatement(node)
             elif node.node_type == "AssignmentNode":
-                id = self.visit(node.children[0])
-                value = self.check_term_expr(node.children[1])
-                type = get_type(value)
-                variable_type = self.s_t.find_variable(id, lineno=node.children[0].lineno)[0]
-                if variable_type == type:
-                    self.s_t.modify_variable(id, value, lineno=node.children[0].lineno)
-                else:
-                    raise TypeMismatch(
-                        f" Error at line {node.children[1].lineno} Inferred type is {type} but {variable_type} was expected")
-                return
+                self.visit_assignment(node)
             elif node.node_type == "FunctionDeclarationNode":
-                function_name = self.visit(node.children[0])
-                parameter_list = self.visit(node.children[1])
-                if len(node.children) == 4:
-                    output_type = self.visit(node.children[2])
-                    stataments_list = node.children[3]
-                    self.f_t.register_function(function_name, parameter_list, stataments_list, output_type,
-                                               lineno=node.children[0].lineno)
-                else:
-                    stataments_list = node.children[2]
-                    self.f_t.register_function(function_name, parameter_list, stataments_list,
-                                               lineno=node.children[0].lineno)
-                return
+                self.visit_functiondeclaration(node)
             elif node.node_type == "FunctionCallingNode":
-                function_name = self.visit(node.children[0])
-                input_parameters = self.visit(node.children[1])
-                parameter_list, statament_list, output_type, lineno = self.f_t.find_variable(function_name,
-                                                                                             node.children[0].lineno)
-                if parameter_list is None and input_parameters is None:
-                    self.s_t.enter_scope()
-                    result = self.visit(statament_list)
-                    result_type = get_type(result)
-                    if self.check_type_match(result_type, output_type, statament_list, lineno): return result
-                elif parameter_list is None and input_parameters is not None:
-                    raise ParamatersMismatch(
-                        f" Error at line {node.children[0].lineno} : Too many arguments for local fun {function_name}")
-                elif parameter_list is not None and input_parameters is None:
-                    raise ParamatersMismatch(
-                        f" Error at line {node.children[0].lineno} : No value passed for parameters {parameter_list}")
-                input_types = [get_type(parameter) for parameter in input_parameters]
-                correct_types = [parameter[1] for parameter in parameter_list]
-                if input_types == correct_types:
-                    self.s_t.enter_scope()
-                    for parameter_input, parameter_declared in zip(parameter_list, input_parameters):
-                        name, type = parameter_input
-                        self.s_t.register_variable(name, type, parameter_declared, 'val',
-                                                   lineno=node.children[0].lineno)
-                    result = self.visit(statament_list)
-                    result_type = get_type(result)
-                    if self.check_type_match(result_type, output_type, statament_list, lineno): return result
-                else:
-                    raise ParamatersMismatch(
-                        f" Error at line {node.children[0].lineno}: Parameters Mismatch in fun {function_name}").with_traceback(
-                        None) from None
+                return self.visit_functioncalling(node)
             elif node.node_type == "RangeOperator":
                 id = self.visit(node.children[0])
                 term_from = node.children[1]
@@ -196,9 +104,191 @@ class Visitor:
             elif node.node_type == "LiteralNode":
                 return node.leaf
         except (TypeMismatch, ParamatersMismatch, VariableNotDeclared, VariableAlreadyDeclared, MainException,
-                VariableNotModifiable, Exception) as e:
+                VariableNotModifiable) as e:
             print(f"Exception: {e}")
-            sys.exit(1)
+            raise MyException("error_message")
+
+    def visit_functioncalling(self, node):
+        """
+        1) Get the function name
+        2) Get the input parameters
+        3) Find the definition of the variable in the symbol table
+        4) Perform the checks on the parameters
+        5) self.check_type_match make sure that the declared output type correspond to the returned one
+        :param node: FunctionCallingNode
+        :return: A value if the function has a return value
+        """
+        function_name = self.visit(node.children[0])
+        input_parameters = self.visit(node.children[1])
+        parameter_list, statament_list, output_type, lineno = self.f_t.find_variable(function_name,
+                                                                                     node.children[0].lineno)
+        if parameter_list is None and input_parameters is None:
+            self.s_t.enter_scope()
+            result = self.visit(statament_list)
+            result_type = get_type(result)
+            if self.check_type_match(result_type, output_type, statament_list, lineno): return result
+        elif parameter_list is None and input_parameters is not None:
+            raise ParamatersMismatch(
+                f" Error at line {node.children[0].lineno} : Too many arguments for local fun {function_name}")
+        elif parameter_list is not None and input_parameters is None:
+            raise ParamatersMismatch(
+                f" Error at line {node.children[0].lineno} : No value passed for parameters {parameter_list}")
+        input_types = [get_type(parameter) for parameter in input_parameters]
+        correct_types = [parameter[1] for parameter in parameter_list]
+        if input_types == correct_types:
+            self.s_t.enter_scope()
+            for parameter_input, parameter_declared in zip(parameter_list, input_parameters):
+                name, type = parameter_input
+                self.s_t.register_variable(name, type, parameter_declared, 'val',
+                                           lineno=node.children[0].lineno)
+            result = self.visit(statament_list)
+            result_type = get_type(result)
+            if self.check_type_match(result_type, output_type, statament_list, lineno): return result
+        else:
+            raise ParamatersMismatch(
+                f" Error at line {node.children[0].lineno}: Parameters Mismatch in fun {function_name}").with_traceback(
+                None) from None
+
+    def visit_functiondeclaration(self, node):
+        """
+        1)Get the function name
+        2) Get the parameter list
+        3) If an output type is declared(node.children==4) take it
+        4) Register function_name,p_list,s_list,output_type,linenumber in the function table
+        5) If an output type is not declared None will be set in the symbol table
+        :param node: FunctionDeclarationNode
+        :return:
+        """
+        function_name = self.visit(node.children[0])
+        parameter_list = self.visit(node.children[1])
+        if len(node.children) == 4:
+            output_type = self.visit(node.children[2])
+            statements_list = node.children[3]
+            self.f_t.register_function(function_name, parameter_list, statements_list, output_type,
+                                       lineno=node.children[0].lineno)
+        else:
+            stataments_list = node.children[2]
+            self.f_t.register_function(function_name, parameter_list, stataments_list,
+                                       lineno=node.children[0].lineno)
+        return
+
+    def visit_assignment(self, node):
+        '''
+        1) Pick the identifier
+        2) check_term_expr check if the value is a term or an expression and retrieve its value
+        3) Infer the type
+        4) Check the value of the variable in the symbol table
+        5) Perform the semantic checks,if ok modify the variable in the symbol table
+        :param node: AssignmentNode
+        :return:
+        '''
+        id = self.visit(node.children[0])
+        value = self.check_term_expr(node.children[1])
+        type = get_type(value)
+        variable_type = self.s_t.find_variable(id, lineno=node.children[0].lineno)[0]
+        if variable_type == type:
+            self.s_t.modify_variable(id, value, lineno=node.children[0].lineno)
+        else:
+            raise TypeMismatch(
+                f" Error at line {node.children[0].lineno} Inferred type is {type} but {variable_type} was expected")
+        return
+
+    def visit_ifstatement(self, node):
+        """
+        1) Visit the condition in order to evaluate it
+        2) Check that the result is of type Boolean
+        3) If true, enter the scope and visit the if block
+        :param node: IfStatementNode
+        :return:
+        """
+        condition = self.visit(node.children[0])
+        if get_type(condition) != "Boolean":
+            raise TypeMismatch(
+                f"Error at line {node.children[0].lineno}:The integer literal does not conform to the expected type Boolean")
+        if condition:
+            self.s_t.enter_scope()
+            statement_list = self.visit(node.children[1])
+            self.s_t.exit_scope()
+            return statement_list
+
+    def visit_ifelsestatement(self, node):
+        """
+        The same of visit_ifstatement (Redundant code only for clarity of explanation)
+        :param node: IfElseStatementNode
+        :return:
+        """
+        condition = self.visit(node.children[0])
+        if get_type(condition) != "Boolean":
+            raise TypeMismatch(
+                f" Error at line {node.children[0].lineno} The integer literal does not conform to the expected type Boolean")
+        if condition:
+            self.s_t.enter_scope()
+            statement_list = self.visit(node.children[1])
+            self.s_t.exit_scope()
+            return statement_list
+        else:
+            self.s_t.enter_scope()
+            statement_list = self.visit(node.children[2])
+            self.s_t.exit_scope()
+            return statement_list
+
+    def visit_forstatement(self, node):
+        '''
+        1)Enter a new scope
+        2)Visit the first child(the range operator Node "Ex: i in 1..4")
+        3)Visit the block
+        4)Clean the scope at each iteration
+        5)Update the value of the parameter in the range operator
+        :param node:ForStatementNode
+        :return:
+        '''
+        self.s_t.enter_scope()
+        id, range_list, step = self.visit(node.children[0])
+        self.s_t.register_variable(id, 'Int', range_list[0], 'val')
+        for i in range_list:
+            result = self.visit(node.children[1])
+            if result is not None:
+                return result
+            self.s_t.clean_scope()
+            self.s_t.register_variable(id, 'Int', i + step, 'val')
+        self.s_t.exit_scope()
+
+    def visit_whilestatement(self, node):
+        '''
+        1)Enter a new scope
+        2) While the condition holds visit the block of the while
+        3) After each visit clean the scope
+        4) Exit the scope once finished
+        :param node: WhileStatementNode
+        '''
+        self.s_t.enter_scope()
+        while self.visit(node.children[0]):
+            result = self.visit(node.children[1])
+            if result is not None:
+                return result
+            self.s_t.clean_scope()
+        self.s_t.exit_scope()
+        return
+
+    def visit_variabledeclaration(self, node):
+        '''
+        1) Pick the variable identifier
+        2) If the declaration has an explicit type get it in order to make the semantic check
+        3) If the declaration has not an implicit type defined infer it in order to make the semantic check
+        4) Register the variable
+        :param node:VariableDeclarationNode
+        '''
+        id = self.visit(node.children[0])
+        if len(node.children) == 3:
+            type = self.visit(node.children[1])
+            expression = self.check_term_expr(node.children[2])
+            if type != get_type(expression):
+                raise TypeMismatch(
+                    f" Error at line {node.children[1].lineno}: Inferred type is {get_type(expression)} but {type} was expected")
+        else:
+            expression = self.check_term_expr(node.children[1])
+            type = get_type(expression)
+        self.s_t.register_variable(id, type, expression, node.leaf, lineno=node.children[0].lineno)
 
     def binary_expression(self, node):
         """
@@ -241,8 +331,8 @@ class Visitor:
     def check_type_match(self, result_type, output_type, statement_list, function_decl_line):
         """
         Function useful to encapsulate the logic for retrieving the correct line error when the result type of
-        a function does not correspond with the real one. In this cases we want the error points to the line
-        where the return is or if the return is not present to the line of the function declaration.
+        a function does not correspond with the real one. In this cases we want the error to point to the line
+        where the return is, or if the return is not present to the line of the function declaration.
         :param result_type: Actual type
         :param output_type: Expected type
         :param statement_list: List of statements that compose the body of a function

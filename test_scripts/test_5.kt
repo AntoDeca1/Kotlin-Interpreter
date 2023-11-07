@@ -3,7 +3,7 @@ fun main(){
         print(x)
     }
 
-    fun prova2(x:Int,y:Int):Int {
+    fun prova2(x:Int,y:Int){
         return x + y
     }
     prova(5)

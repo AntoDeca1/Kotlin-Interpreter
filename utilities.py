@@ -28,3 +28,11 @@ def string_concatenation(operator_1, operator_2):
     Following the Kotlin behaviour applies string concatenation
     """
     return operator_1 + str(operator_2)
+
+
+def check_if_return(node_list):
+    present = False
+    for node in node_list:
+        if node.node_type == "ReturnNode":
+            present = True
+    return present
