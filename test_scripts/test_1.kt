@@ -1,3 +1,4 @@
+val u=20;
 fun main() {
     val x = 5
     var y = 10
@@ -6,6 +7,7 @@ fun main() {
         y=y+1
         }
     }
+    print(u)
     while(y<280){
      y=y+1}
     print("----Variabile y dopo le modifiche----")

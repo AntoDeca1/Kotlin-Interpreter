@@ -36,9 +36,9 @@ class Visitor:
             elif node.node_type == "VariableDeclarationNode":
                 self.visit_variabledeclaration(node)
             elif node.node_type == "WhileStatementNode":
-                self.visit_whilestatement(node)
+                return self.visit_whilestatement(node)
             elif node.node_type == "ForStatement":
-                self.visit_forstatement(node)
+                return self.visit_forstatement(node)
             elif node.node_type == "If-else-StatementNode":
                 return self.visit_ifelsestatement(node)
             elif node.node_type == "IfStatementNode":

@@ -31,17 +31,20 @@ while True:
     new_parser = initialize_parser()
 
     new_lexer.input(input_sentence)
-    parsed_result = new_parser.parse(lexer=new_lexer)
+    try:
+        parsed_result = new_parser.parse(lexer=new_lexer)
 
-    s_t = SymbolTable()
-    f_t = FunctionTable()
-    ast_flag = input("Do you want to see the resulting AST? [y|n] :")
+        s_t = SymbolTable()
+        f_t = FunctionTable()
+        ast_flag = input("Do you want to see the resulting AST? [y|n] :")
 
-    if ast_flag == "y":
-        print("-----------AST-Construction----------")
-        print(parsed_result)
-    print("-----------Interpreting----------")
-    visitor = Visitor(s_t, f_t)
-    visitor.visit(parsed_result)
+        if ast_flag == "y":
+            print("-----------AST-Construction----------")
+            print(parsed_result)
+        print("-----------Interpreting----------")
+        visitor = Visitor(s_t, f_t)
+        visitor.visit(parsed_result)
+    except MyException as e:
+        continue
 
 input("Press Enter to exit...")
