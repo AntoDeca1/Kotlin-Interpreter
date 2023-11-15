@@ -108,6 +108,30 @@ class Visitor:
             print(f"Exception: {e}")
             raise MyException("error_message")
 
+    def enter_scope(self):
+        """
+        Enter a scope in both symbol tables(!NEW)
+        :return:
+        """
+        self.s_t.enter_scope()
+        self.f_t.enter_scope()
+
+    def exit_scope(self):
+        """
+        Get out of scope in both symbol tables(!NEW)
+        :return:
+        """
+        self.s_t.exit_scope()
+        self.f_t.exit_scope()
+
+    def clean_scope(self):
+        """
+        Clean the scope in both symbol tables(NEW!)
+        :return:
+        """
+        self.s_t.clean_scope()
+        self.f_t.clean_scope()
+
     def visit_functioncalling(self, node):
         """
         1) Get the function name
@@ -123,7 +147,7 @@ class Visitor:
         parameter_list, statament_list, output_type, lineno = self.f_t.find_variable(function_name,
                                                                                      node.children[0].lineno)
         if parameter_list is None and input_parameters is None:
-            self.s_t.enter_scope()
+            self.enter_scope()
             result = self.visit(statament_list)
             result_type = get_type(result)
             if self.check_type_match(result_type, output_type, statament_list, lineno): return result
@@ -136,7 +160,7 @@ class Visitor:
         input_types = [get_type(parameter) for parameter in input_parameters]
         correct_types = [parameter[1] for parameter in parameter_list]
         if input_types == correct_types:
-            self.s_t.enter_scope()
+            self.enter_scope()
             for parameter_input, parameter_declared in zip(parameter_list, input_parameters):
                 name, type = parameter_input
                 self.s_t.register_variable(name, type, parameter_declared, 'val',
@@ -206,9 +230,9 @@ class Visitor:
             raise TypeMismatch(
                 f"Error at line {node.children[0].lineno}:The integer literal does not conform to the expected type Boolean")
         if condition:
-            self.s_t.enter_scope()
+            self.enter_scope()
             statement_list = self.visit(node.children[1])
-            self.s_t.exit_scope()
+            self.exit_scope()
             return statement_list
 
     def visit_ifelsestatement(self, node):
@@ -222,14 +246,14 @@ class Visitor:
             raise TypeMismatch(
                 f" Error at line {node.children[0].lineno} The integer literal does not conform to the expected type Boolean")
         if condition:
-            self.s_t.enter_scope()
+            self.enter_scope()
             statement_list = self.visit(node.children[1])
-            self.s_t.exit_scope()
+            self.exit_scope()
             return statement_list
         else:
-            self.s_t.enter_scope()
+            self.enter_scope()
             statement_list = self.visit(node.children[2])
-            self.s_t.exit_scope()
+            self.exit_scope()
             return statement_list
 
     def visit_forstatement(self, node):
@@ -242,16 +266,16 @@ class Visitor:
         :param node:ForStatementNode
         :return:
         '''
-        self.s_t.enter_scope()
+        self.enter_scope()
         id, range_list, step = self.visit(node.children[0])
         self.s_t.register_variable(id, 'Int', range_list[0], 'val')
         for i in range_list:
             result = self.visit(node.children[1])
             if result is not None:
                 return result
-            self.s_t.clean_scope()
+            self.clean_scope()
             self.s_t.register_variable(id, 'Int', i + step, 'val')
-        self.s_t.exit_scope()
+        self.exit_scope()
 
     def visit_whilestatement(self, node):
         '''
@@ -261,13 +285,13 @@ class Visitor:
         4) Exit the scope once finished
         :param node: WhileStatementNode
         '''
-        self.s_t.enter_scope()
+        self.enter_scope()
         while self.visit(node.children[0]):
             result = self.visit(node.children[1])
             if result is not None:
                 return result
-            self.s_t.clean_scope()
-        self.s_t.exit_scope()
+            self.clean_scope()
+        self.exit_scope()
         return
 
     def visit_variabledeclaration(self, node):

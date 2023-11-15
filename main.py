@@ -7,17 +7,18 @@ from symbol_table import *
 
 with open('test_scripts/test_1.kt', 'r') as file:
     input_sentence = file.read()
-lexer = initialize_lexer()
-lexer.input(input_sentence)
-parsed_result = parser.parse(lexer=lexer)
 
-s_t = SymbolTable()
-f_t = FunctionTable()
-print("-----------AST-Construction----------")
-print(parsed_result)
-print("-----------Interpreting----------")
-visitor = Visitor(s_t, f_t)
 try:
+    lexer = initialize_lexer()
+    lexer.input(input_sentence)
+    parsed_result = parser.parse(lexer=lexer)
+
+    s_t = SymbolTable()
+    f_t = FunctionTable()
+    print("-----------AST-Construction----------")
+    print(parsed_result)
+    print("-----------Interpreting----------")
+    visitor = Visitor(s_t, f_t)
     visitor.visit(parsed_result)
-except MyException as e:
+except (MyException,ParserError) as e:
     sys.exit(1)

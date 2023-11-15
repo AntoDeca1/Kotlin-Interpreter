@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 from lexer import *
 from Node import *
+from exceptions import *
 
 # Start symbol of the grammar
 start = "program"
@@ -274,8 +275,9 @@ def p_readline(p):
 def p_error(p):
     line = p.lineno
     token = p.value
-    print(f"Error at line {line}: Unexpected token '{token}'")
-    parser.success = False
+    error_message = f"Error at line {line}: Unexpected token '{token}'"
+    print(error_message)
+    raise ParserError(error_message)
 
 
 parser = yacc.yacc()

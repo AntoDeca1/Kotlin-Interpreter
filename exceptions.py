@@ -2,9 +2,17 @@ class TypeMismatch(Exception):
     def __init__(self, messaggio):
         super().__init__(messaggio)
 
+
+class ParserError(Exception):
+    def __init__(self, messaggio):
+        super().__init__(messaggio)
+
+
 class MyException(Exception):
     def __init__(self, messaggio):
         super().__init__(messaggio)
+
+
 class ParamatersMismatch(Exception):
     def __init__(self, messaggio):
         super().__init__(messaggio)

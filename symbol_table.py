@@ -31,7 +31,8 @@ class SymbolTable:
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise VariableAlreadyDeclared(f" Error at line {lineno} Variable {name} already declared in the current scope")
+            raise VariableAlreadyDeclared(
+                f" Error at line {lineno} Variable {name} already declared in the current scope")
         current_symbol_table[name] = (type, value, is_Var)
 
     def clean_scope(self):
@@ -64,7 +65,7 @@ class SymbolTable:
                 type, _, variable_type = symbol_table[name]
                 if is_changeable(variable_type):
                     symbol_table[name] = (type, new_value, variable_type)
-                    found = True
+                    return
                 else:
                     raise VariableNotModifiable(f" Error at line {lineno}: Val variables are not modifiable")
         if found == False:
@@ -85,5 +86,6 @@ class FunctionTable(SymbolTable):
         """
         current_symbol_table = self.symbol_tables[-1]
         if name in current_symbol_table:
-            raise VariableAlreadyDeclared(f" Error at line {lineno}: Function {name} already declared in the current scope")
+            raise VariableAlreadyDeclared(
+                f" Error at line {lineno}: Function {name} already declared in the current scope")
         current_symbol_table[name] = (parameter_list, statament_list, output_type, lineno)

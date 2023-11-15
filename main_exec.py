@@ -44,7 +44,7 @@ while True:
         print("-----------Interpreting----------")
         visitor = Visitor(s_t, f_t)
         visitor.visit(parsed_result)
-    except MyException as e:
+    except (MyException, ParserError) as e:
         continue
 
 input("Press Enter to exit...")
